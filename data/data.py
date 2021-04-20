@@ -1,4 +1,3 @@
-import requests as rq 
 import json
 import mysql.connector
 
@@ -9,7 +8,6 @@ mydb=mysql.connector.connect(
     database="taipeiweb"
 )
 mycursor=mydb.cursor()
-
 
 # with open ("taipei-attractions.json","r",encoding="utf-8") as f:
 #    result=f.read()
