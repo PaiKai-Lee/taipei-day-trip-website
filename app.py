@@ -65,11 +65,12 @@ def apiAttractions():
 def apiAttraction(attractionId):
 	mycursor.execute("SELECT COUNT(*) FROM attraction")
 	num=mycursor.fetchone()[0]
-	print(num)
 	if attractionId > num:
 		return jsonify({"error":True,"message":"自訂錯誤訊息"}),400
+		
 	mycursor.execute("SELECT * FROM attraction where id = %s",(attractionId,))
 	myresult=mycursor.fetchall()
+
 	if len(myresult)==0:
 		return jsonify({"error":True,"message":"自訂錯誤訊息"}),500
 	for information in myresult:
@@ -86,6 +87,6 @@ def apiAttraction(attractionId):
 			"images":information[9]
 		}
 	return jsonify({"data":data})
-	
+
 if __name__=="__main__":
-	app.run(port=3000)
+	app.run(host="0.0.0.0",port=3000)
