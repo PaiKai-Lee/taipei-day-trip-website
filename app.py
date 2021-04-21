@@ -8,13 +8,13 @@ app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.config['JSON_SORT_KEYS'] = False
 
-mydb=mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="abcd1234",
-    database="taipeiweb"
-)
-mycursor=mydb.cursor()
+# mydb=mysql.connector.connect(
+#     host="localhost",
+#     user="root",
+#     password="Abcd1234@",
+#     database="taipeiweb"
+# )
+# mycursor=mydb.cursor()
 
 # Pages
 @app.route("/")
