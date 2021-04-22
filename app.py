@@ -55,7 +55,7 @@ def apiAttractions():
             "mrt":information[6],
             "latitude":information[7],
             "longitude":information[8],
-            "images":information[9]
+            "images":json.loads(information[9])
        	})
 	print("內容數量: "+str(len(myresult)))
 	if len(myresult)/12 == 1:
