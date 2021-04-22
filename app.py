@@ -91,7 +91,7 @@ def apiAttraction(attractionId):
 			"mrt":information[6],
 			"latitude":information[7],
 			"longitude":information[8],
-			"images":information[9]
+			"images":json.loads(information[9])
 		}
 	return jsonify({"data":data})
 
