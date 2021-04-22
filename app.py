@@ -1,6 +1,7 @@
 from flask import *
 import mysql.connector
 import json
+import os
 
 
 app=Flask(__name__)
@@ -14,7 +15,14 @@ app.config['JSON_SORT_KEYS'] = False
 #     password="Abcd1234@",
 #     database="taipeiweb"
 # )
-# mycursor=mydb.cursor()
+mydb=mysql.connector.connect(
+    host="localhost",
+    user=os.environ.get('DB_USER'),
+    password=os.environ.get("DB_PASSWORD"),
+    database="taipeiweb"
+)
+mycursor=mydb.cursor()
+
 
 # Pages
 @app.route("/")
@@ -55,8 +63,13 @@ def apiAttractions():
             "longitude":information[8],
             "images":information[9]
        	})
+	print("內容數量: "+str(len(myresult)))
+	if len(myresult)/12 == 1:
+		nextPage=page+1
+	else:
+		nextPage=None
 	final={
-		"nextPage":page+1,
+		"nextPage":nextPage,
 		"data":data
 	}
 	return jsonify(final)
