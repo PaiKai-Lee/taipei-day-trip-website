@@ -46,7 +46,8 @@ h1{
 }
 .banner_photo{
     position: absolute;
-    right: 232px;
+    right: 240px;
+    max-width: 100%;
     z-index: 0;
 }
 .top_fram{
@@ -80,8 +81,10 @@ h2{
     font-size: 16px;
     outline: none;
 }
+
+/* 主要內容圖片 */
 .wrap{
-    width: 1200px;
+    width: 1200px;            
     max-width: 100%;
     margin: auto;
     display: flex;
@@ -90,12 +93,24 @@ h2{
 }
 .container{
     width: 270px;
-    height: auto;
+    height: 242px;
     margin: 15px;
     border:1px lightgray solid;
+    border-radius: 5px;
 }
 .item{
     width: 100%;
+    height: 162px;
+    object-fit: cover;
+}
+.cat1{
+    padding-left: 10px;
+}
+.cat{
+    display: flex;
+    justify-content: space-between;
+    padding:10px;
+    line-height: 20px;
 }
 
 footer{
@@ -106,6 +121,7 @@ footer{
     height: 104px;
     background: #757575
 }
+/* 彈出式登入框 */
 .login-dialog{
     width: 340px;
     height: 275px;
