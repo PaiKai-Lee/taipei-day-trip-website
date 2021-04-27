@@ -1,71 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+TC:wght@100&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+TC:wght@100&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="/static/css/index.css" type="text/css">
     <title>台北一日遊網站</title>
-    <script>   
-        function init(){
+    <script>
+        let add_content = (item_len, myJson) => {
+            for (i = 0; i < item_len; i++) {
+                let title = myJson["data"][i]["name"];
+                let mrt = myJson["data"][i]["mrt"];
+                let cat = myJson["data"][i]["category"];
+                let photo = myJson["data"][i]["images"][0]
+                let content_wrap = document.getElementById("content_wrap");
+                let div_container = document.createElement("div");
+                let div_cat = document.createElement("div");
+                div_container.className = "container";
+                let container_image = document.createElement("img");
+                container_image.src = photo;
+                container_image.className = "item";
+                let image_name = document.createElement("p");
+                image_name.textContent = title;
+                let p_mrt = document.createElement("p");
+                p_mrt.textContent = mrt;
+                let p_cat = document.createElement("p");
+                p_cat.textContent = cat;
+                image_name.className = "cat1";
+                div_cat.className = "cat";
+
+                content_wrap.appendChild(div_container);
+                div_container.appendChild(container_image);
+                div_container.appendChild(image_name);
+                div_container.appendChild(div_cat);
+                div_cat.appendChild(p_mrt);
+                div_cat.appendChild(p_cat);
+            };
+        }
+        let nextPage;
+        function init() {
             fetch('http://127.0.0.1:3000/api/attractions')
-                .then(function(response) {
+                .then(function (response) {
                     console.log(response);
                     return response.json();
                 })
-                .then(function(myJson) {
-                    let item_len=myJson["data"].length;
-                    for (i=0;i<item_len;i++){
-                        let title=myJson["data"][i]["name"];
-                        let mrt=myJson["data"][i]["mrt"];
-                        let cat=myJson["data"][i]["category"];
-                        let photo=myJson["data"][i]["images"][0]
-                        let content_wrap=document.getElementById("content_wrap");
-                        let div_container=document.createElement("div");
-                        let div_cat=document.createElement("div");
-                        div_container.className="container";
-                        let container_image=document.createElement("img");
-                        container_image.src=photo;
-                        container_image.className="item";
-                        let image_name=document.createElement("p");
-                        let p_mrt=document.createElement("p");
-                        let p_cat=document.createElement("p");
-                        image_name.className="cat1";
-                        div_cat.className="cat";
-                        content_wrap.appendChild(container_image);
-
-                    };
+                .then(function (myJson) {
+                    nextPage = myJson["nextPage"];
+                    let item_len = myJson["data"].length;
+                    add_content(item_len, myJson);
                 });
-        }                
-        // <img src="https://picsum.photos/270/180?random=4" class="item">
-        // <p class="cat1">QQQQQ</p>
-        // <div class="cat"><p>5678</p><p>1234</p></div>
-        //     // window.addEventListener("scroll",()=>{
-            //     let scrolled=window.scrollY;        //Y軸捲動量
-            //     let sh=document.documentElement.scrollHeight; // 整體內容的高度
-            //     let ch=document.documentElement.clientHeight; // 整體內容的高度(不管有無卷軸滾動皆可完整呈現)
-            //     let ih=window.innerHeight; //目前視窗可呈現的內容得高度
-            //     // console.log(scrolled);
-            //     console.log(sh);
-            //     console.log(ch);
-            //     console.log(ih);
-            //     console.log(sh-ih);
-            // })
+        }
+        window.addEventListener("scroll", () => {
+            let scrolled = window.scrollY;
+            let screen_h = document.documentElement.clientHeight;
+            let total_h = document.documentElement.scrollHeight;
+            let load_trigger = total_h - screen_h - 10
 
-        
+            if (scrolled > load_trigger) {
+                if (nextPage != null) {
+                    let params = { page: nextPage }
+                    let url = new URL("http://127.0.0.1:3000/api/attractions")
+                    url.search = new URLSearchParams(params).toString()
+                    fetch(url)
+                        .then(function (response) {
+                            console.log(response);
+                            return response.json();
+                        })
+                        .then(function (myJson) {
+                            nextPage = myJson["nextPage"];
+                            let item_len = myJson["data"].length;
+                            add_content(item_len, myJson);
+                        });
+                };
+            }
+        })
     </script>
 </head>
+
 <body onload="init()">
     <header>
-           <div class="header_fram">
-               <h1>台北一日遊</h1>
-                <div>
-                    <p class="dialog">預定行程</p>
-                    <p class="dialog">登入/註冊</p>
-                </div>
-           </div>
+        <div class="header_fram">
+            <h1>台北一日遊</h1>
+            <div>
+                <p class="dialog">預定行程</p>
+                <p class="dialog">登入/註冊</p>
+            </div>
+        </div>
     </header>
     <div class="banner">
         <div class="top_fram">
@@ -79,20 +103,23 @@
         <img src="/static/img/welcome 1.png" alt="welcome photo" class="banner_photo">
     </div>
     <div class="wrap" id="content_wrap">
+        <!-- Ajax 加入內容 -->
 
     </div>
+    <!-- 登入對話框 -->
     <div class="login-dialog">
         <img src="/static/img/icon_close.png" alt="" id="login-close">
         <div>登入會員帳號</div>
-         <form action="#" name="member">
+        <form action="#" name="member">
             <input type="email" placeholder="輸入電子信箱" class="login-info" name="email">
             <input type="password" placeholder="輸入密碼" class="login-info" name="password">
             <button type="submit" id="login-btn">登入帳戶</button>
-         </form>
-         <p>還沒有帳戶?點此註冊</p>
+        </form>
+        <p>還沒有帳戶?點此註冊</p>
     </div>
     <footer>
         <p>COPYRIGHT &#169; 2021 台北一日遊</p>
     </footer>
 </body>
+
 </html>
