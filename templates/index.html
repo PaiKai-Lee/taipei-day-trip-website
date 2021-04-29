@@ -42,12 +42,11 @@
                 div_cat.appendChild(p_cat);
             };
         }
-        let nextPage=0;
-        let keyword="";
+        let nextPage = 0;
+        let keyword = "";
         function init() {
             fetch('http://13.115.37.65:3000/api/attractions')
                 .then(function (response) {
-                    console.log(response);
                     return response.json();
                 })
                 .then(function (myJson) {
@@ -60,8 +59,7 @@
             let search_btn = document.getElementById("search_btn");
             let view_name = document.getElementById("view_name");
             search_btn.addEventListener("click", function (e) {
-                console.log(e);
-                nextPage=0;
+                nextPage = 0;
                 let content_wrap = document.getElementById("content_wrap");
                 content_wrap.innerHTML = "";
                 keyword = view_name.value;
@@ -86,8 +84,20 @@
                     });
             });
         }
+        //debounce function
+        let debounce = (fn, delay) => {
+            let timeoutID;
+            return (...args) => {
+                if (timeoutID) {
+                    clearTimeout(timeoutID);
+                }
+                timeoutID = setTimeout(() => {
+                    fn(...args);
+                }, delay);
+            };
+        };
         // infinite scroll & laoding nextpage
-        window.addEventListener("scroll", (e) => {
+        window.addEventListener("scroll", debounce(e => {
             let scrolled = window.scrollY;
             let screen_h = document.documentElement.clientHeight;
             let total_h = document.documentElement.scrollHeight;
@@ -95,12 +105,11 @@
 
             if (scrolled > load_trigger) {
                 if (nextPage != null) {
-                    let params = { page: nextPage, keyword: keyword}
+                    let params = { page: nextPage, keyword: keyword }
                     let url = new URL("http://13.115.37.65:3000/api/attractions")
                     url.search = new URLSearchParams(params).toString()
                     fetch(url)
                         .then(function (response) {
-                            console.log(response);
                             return response.json();
                         })
                         .then(function (myJson) {
@@ -110,7 +119,7 @@
                         });
                 };
             }
-        });
+        }, 500));
     </script>
 </head>
 
