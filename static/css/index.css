@@ -189,6 +189,7 @@ footer{
 @media screen and (max-width:600px){
     .banner{
         height: 280px;
+        overflow: hidden;
     }
     .container{
         width: 90%;
@@ -199,7 +200,7 @@ footer{
     }
     .banner_photo{
         position: absolute;
-        right :-20%;
+        right: -20%;
         max-width: 80%;
         overflow: hidden;
     }
