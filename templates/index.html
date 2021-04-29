@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/static/css/index.css" type="text/css">
     <title>台北一日遊網站</title>
     <script>
+        // 載入資料函式
         let add_content = (item_len, myJson) => {
             for (i = 0; i < item_len; i++) {
                 let title = myJson["data"][i]["name"];
@@ -41,7 +42,8 @@
                 div_cat.appendChild(p_cat);
             };
         }
-        let nextPage;
+        let nextPage=0;
+        let keyword="";
         function init() {
             fetch('http://127.0.0.1:3000/api/attractions')
                 .then(function (response) {
@@ -53,16 +55,47 @@
                     let item_len = myJson["data"].length;
                     add_content(item_len, myJson);
                 });
+
+            // 景點查詢
+            let search_btn = document.getElementById("search_btn");
+            let view_name = document.getElementById("view_name");
+            search_btn.addEventListener("click", function (e) {
+                console.log(e);
+                nextPage=0;
+                let content_wrap = document.getElementById("content_wrap");
+                content_wrap.innerHTML = "";
+                keyword = view_name.value;
+                let params = { page: nextPage, keyword: keyword }
+                let url = new URL("http://127.0.0.1:3000/api/attractions")
+                url.search = new URLSearchParams(params).toString();
+                fetch(url)
+                    .then(function (response) {
+                        console.log(response.status);
+                        if (response.status != 200) {
+                            let view_error = document.createElement("p")
+                            view_error.textContent = "查無相關內容"
+                            content_wrap.appendChild(view_error)
+                        }
+                        return response.json();
+                    })
+                    .then(function (myJson) {
+                        nextPage = myJson["nextPage"];
+                        let item_len = myJson["data"].length;
+                        add_content(item_len, myJson);
+                        console.log(nextPage);
+                    });
+            });
         }
-        window.addEventListener("scroll", () => {
+        // infinite scroll & laoding nextpage
+        window.addEventListener("scroll", (e) => {
             let scrolled = window.scrollY;
             let screen_h = document.documentElement.clientHeight;
             let total_h = document.documentElement.scrollHeight;
-            let load_trigger = total_h - screen_h - 10
+            let load_trigger = (total_h - screen_h) * 0.95
 
             if (scrolled > load_trigger) {
                 if (nextPage != null) {
-                    let params = { page: nextPage }
+                    let params = { page: nextPage, keyword: keyword}
                     let url = new URL("http://127.0.0.1:3000/api/attractions")
                     url.search = new URLSearchParams(params).toString()
                     fetch(url)
@@ -77,7 +110,7 @@
                         });
                 };
             }
-        })
+        });
     </script>
 </head>
 
@@ -97,7 +130,7 @@
             <p>探索每個角落，體驗城市的深度旅遊行程</p>
             <div class="view_box">
                 <input type="text" placeholder="輸入景點名稱查詢" name="view_name" id="view_name">
-                <button id="search_btn" type="button"><img src="/static/img/search.png" alt=""></button>
+                <button id="search_btn" type="submit"><img src="/static/img/search.png" alt=""></button>
             </div>
         </div>
         <img src="/static/img/welcome 1.png" alt="welcome photo" class="banner_photo">

@@ -46,7 +46,8 @@ h1{
 }
 .banner_photo{
     position: absolute;
-    right: 240px;
+    right: 10%;
+    bottom: 0;
     max-width: 100%;
     z-index: 0;
 }
@@ -179,6 +180,11 @@ footer{
         width: 45%;
         height: auto;
     }
+    .banner_photo{
+        position: absolute;
+        right: 0%;
+        max-width: 90%;
+    }
 }
 @media screen and (max-width:600px){
     .banner{
@@ -190,6 +196,12 @@ footer{
     
     #view_name{
         max-width: 65%;
+    }
+    .banner_photo{
+        position: absolute;
+        right :-20%;
+        max-width: 80%;
+        overflow: hidden;
     }
     
 }
