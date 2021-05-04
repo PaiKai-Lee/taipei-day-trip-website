@@ -2,13 +2,13 @@ import json
 import mysql.connector
 import os 
 
-mydb=mysql.connector.connect(
-    host="localhost",
-    user=os.environ.get('DB_USER'),
-    password=os.environ.get("DB_PASSWORD"),
-    database="taipeiweb"
-)
-mycursor=mydb.cursor()
+# mydb=mysql.connector.connect(
+#     host="localhost",
+#     user=os.environ.get('DB_USER'),
+#     password=os.environ.get("DB_PASSWORD"),
+#     database="taipeiweb"
+# )
+# mycursor=mydb.cursor()
 
 
 # with open ("taipei-attractions.json","r",encoding="utf-8") as f:
