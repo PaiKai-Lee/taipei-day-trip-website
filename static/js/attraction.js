@@ -46,7 +46,7 @@ function init() {
     let url_path = window.location.pathname;
     console.log(url_path);
     id=url_path.split("/")[2]
-    url="http://127.0.0.1:3000/api/attraction/"+id
+    url="http://13.115.37.65:3000/api/attraction/"+id
 
 
     fetch(url)

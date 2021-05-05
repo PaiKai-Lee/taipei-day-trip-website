@@ -22,7 +22,7 @@ let add_content = (item_len, myJson) => {
         image_name.className = "cat1";
         div_cat.className = "cat";
         let image_link=document.createElement("a")
-        let attraction_url="http://127.0.0.1:3000/attraction/"+view_id;
+        let attraction_url="http://13.115.37.65:3000/api/attraction/"+view_id;
         image_link.href=attraction_url;
 
         
@@ -38,7 +38,7 @@ let add_content = (item_len, myJson) => {
 let nextPage = 0;
 let keyword = "";
 function init() {
-    fetch('http://127.0.0.1:3000/api/attractions')
+    fetch('http://13.115.37.65:3000/api/attractions')
         .then(function (response) {
             return response.json();
         })
@@ -57,7 +57,7 @@ function init() {
         content_wrap.innerHTML = "";
         keyword = view_name.value;
         let params = { page: nextPage, keyword: keyword }
-        let url = new URL("http://127.0.0.1:3000/api/attractions")
+        let url = new URL("http://13.115.37.65:3000/api/attractions")
         url.search = new URLSearchParams(params).toString();
         fetch(url)
             .then(function (response) {
@@ -109,7 +109,7 @@ window.addEventListener("scroll", debounce(e => {
     if (scrolled > load_trigger) {
         if (nextPage != null) {
             let params = { page: nextPage, keyword: keyword }
-            let url = new URL("http://127.0.0.1:3000/api/attractions")
+            let url = new URL("http://13.115.37.65:3000/api/attractions")
             url.search = new URLSearchParams(params).toString()
             fetch(url)
                 .then(function (response) {
