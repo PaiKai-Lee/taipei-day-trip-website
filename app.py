@@ -69,7 +69,7 @@ def apiAttractions():
 	return jsonify(final)
 
 @app.route("/api/attraction/<int:attractionId>")
-def apiAttraction(attractionId):
+def apiAttraction(attractionId = 1):
 	mycursor.execute("SELECT COUNT(*) FROM attraction")
 	num=mycursor.fetchone()[0]
 	if attractionId > num:

@@ -1,6 +1,7 @@
 // 載入資料函式
 let add_content = (item_len, myJson) => {
     for (i = 0; i < item_len; i++) {
+        let view_id=myJson["data"][i]["id"].toString();
         let title = myJson["data"][i]["name"];
         let mrt = myJson["data"][i]["mrt"];
         let cat = myJson["data"][i]["category"];
@@ -20,9 +21,14 @@ let add_content = (item_len, myJson) => {
         p_cat.textContent = cat;
         image_name.className = "cat1";
         div_cat.className = "cat";
+        let image_link=document.createElement("a")
+        let attraction_url="http://127.0.0.1:3000/attraction/"+view_id;
+        image_link.href=attraction_url;
 
+        
+        image_link.appendChild(container_image)
         content_wrap.appendChild(div_container);
-        div_container.appendChild(container_image);
+        div_container.appendChild(image_link);
         div_container.appendChild(image_name);
         div_container.appendChild(div_cat);
         div_cat.appendChild(p_mrt);
