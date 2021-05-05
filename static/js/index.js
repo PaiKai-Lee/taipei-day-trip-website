@@ -22,7 +22,7 @@ let add_content = (item_len, myJson) => {
         image_name.className = "cat1";
         div_cat.className = "cat";
         let image_link=document.createElement("a")
-        let attraction_url="http://13.115.37.65:3000/api/attraction/"+view_id;
+        let attraction_url="http://13.115.37.65:3000/attraction/"+view_id;
         image_link.href=attraction_url;
 
         
