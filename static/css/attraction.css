@@ -223,7 +223,7 @@ footer{
 @media screen and (max-width:600px){
     .wrap .slider{
         margin:0 auto 0 auto;
-        height: 406px;
+        height: 350px;
         width: 100%;
     }
     .wrap .side{
