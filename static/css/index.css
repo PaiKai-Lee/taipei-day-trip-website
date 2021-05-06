@@ -145,6 +145,7 @@ footer{
     z-index: 2;
     font-weight: 800;
     display: none;
+    animation: smooth .5s ;
 }
 .login-fram{
     padding: 15px;
@@ -189,6 +190,19 @@ footer{
     right: 10px;
     font-size: larger;
     cursor: pointer;
+}
+
+@keyframes smooth{
+    0% {
+        display: none;
+        top: 190px;
+        opacity: 0.5;
+    }
+    100% {
+        display: block;
+        top: 210px;
+        opacity: 1;
+    }
 }
 
 @media screen and (max-width:1200px){

@@ -43,7 +43,7 @@ body{
     padding-top: 40px;
 }
 body hr{
-    border: solid gray 1px;
+    border: solid #E8E8E8 1px;
 }
 /* attraction 內容 */
 .wrap{
@@ -117,7 +117,6 @@ input[name="radio_img"]{
     max-width: 100%;
     width: 600px;
     height: 302px;
-    border: black 1px solid;
     background-color: #E8E8E8;
     box-sizing: border-box;
     padding: 10px;
@@ -181,7 +180,7 @@ input[type="radio"]:checked ~ span::after{
     font-weight:lighter;
 }
 .wrap hr{
-    border: solid gray 1px;
+    border: solid #E8E8E8 1px;
     margin: 48px 0;
 }
 /* 文字內容 */
