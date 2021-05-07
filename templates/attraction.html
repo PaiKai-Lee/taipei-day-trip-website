@@ -1,12 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+TC:wght@300&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/attraction.css" type="text/css">
+    <script src="/static/js/attraction.js"></script>
     <title>Document</title>
 </head>
-<body>
-    
+
+<body onload="init()">
+    <header>
+        <div class="header_fram">
+            <h1>台北一日遊</h1>
+            <div>
+                <p class="dialog">預定行程</p>
+                <p class="dialog" id="show_login">登入/註冊</p>
+            </div>
+        </div>
+    </header>
+    <hr>
+    <div class="wrap">
+        <div class="top">
+            <div class="slider" id="slider">
+                <div class="slider_radio" id="slider_radio">
+                    <!-- Ajax帶入與圖片相同 radio -->
+                </div>
+                <!-- Ajax圖片 -->
+                <img src="/static/img/right arrow.png" id="next">
+                <img src="/static/img/btn_leftArrow.png" id="prev">
+            </div>
+            <div class="side">
+                <div class="side_info" id="side_info">
+                    <!-- Ajax帶入資料 -->
+                </div>
+                <div class="booking_form">
+                    <p>訂購導覽行程</p>
+                    <p class="line2">以此景點為中心的一日行程，帶您探索城市角落故事</p>
+                    <form action="#">
+                        <div>選擇日期 : <input type="date" required></div>
+                        <div>選擇時間 :
+                            <label class="radio">
+                                <input type="radio" name="time" value="2000" id="morning" required><span></span>
+                                上半天
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="time" value="2500" id="afternoon"><span></span>
+                                下半天
+                            </label>
+                        </div>
+                        <div>導覽費用 : <span id="money"></span></div>
+                        <button type="submit" id="booking_btn">開始預訂行程</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="content">
+            <div class="view_info" id="view_info">
+                <!-- Ajax帶入 -->
+            </div>
+            <div id="view_address">
+                <p class="p1">景點地址 : </p>
+                <!-- 帶入資料 -->
+            </div>
+            <div id="transportation">
+                <p class="p1">交通方式 : </p>
+                <!-- 帶入資料 -->
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>COPYRIGHT &#169; 2021 台北一日遊</p>
+    </footer>
 </body>
+
 </html>
