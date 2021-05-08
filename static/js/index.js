@@ -1,3 +1,4 @@
+let Domain="http://13.115.37.65:3000"
 // 載入資料函式
 let add_content = (item_len, myJson) => {
     for (i = 0; i < item_len; i++) {
@@ -22,7 +23,7 @@ let add_content = (item_len, myJson) => {
         image_name.className = "cat1";
         div_cat.className = "cat";
         let image_link=document.createElement("a")
-        let attraction_url="http://13.115.37.65:3000/attraction/"+view_id;
+        let attraction_url=Domain+"/attraction/"+view_id;
         image_link.href=attraction_url;
 
         
@@ -37,8 +38,8 @@ let add_content = (item_len, myJson) => {
 }
 let nextPage = 0;
 let keyword = "";
-function init() {
-    fetch('http://13.115.37.65:3000/api/attractions')
+window.onload=()=>{
+    fetch(Domain+'/api/attractions')
         .then(function (response) {
             return response.json();
         })
@@ -57,7 +58,7 @@ function init() {
         content_wrap.innerHTML = "";
         keyword = view_name.value;
         let params = { page: nextPage, keyword: keyword }
-        let url = new URL("http://13.115.37.65:3000/api/attractions")
+        let url = new URL(Domain+"/api/attractions")
         url.search = new URLSearchParams(params).toString();
         fetch(url)
             .then(function (response) {
@@ -109,7 +110,7 @@ window.addEventListener("scroll", debounce(e => {
     if (scrolled > load_trigger) {
         if (nextPage != null) {
             let params = { page: nextPage, keyword: keyword }
-            let url = new URL("http://13.115.37.65:3000/api/attractions")
+            let url = new URL(Domain+"/api/attractions")
             url.search = new URLSearchParams(params).toString()
             fetch(url)
                 .then(function (response) {

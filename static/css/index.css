@@ -106,6 +106,9 @@ h2{
     height: 162px;     
     object-fit: cover;
 }
+.item:hover{
+    opacity: 0.7;
+}
 .container p{
     font-weight: 900; 
     white-space: nowrap;

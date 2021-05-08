@@ -95,5 +95,10 @@ def apiAttraction(attractionId):
 		}
 	return jsonify({"data":data})
 
+#使用者API
+@app.route("/api/user",methods=["GET","POST","PATCH","DELETE"])
+def user():
+	return "test"
+
 if __name__=="__main__":
 	app.run(host="0.0.0.0",port=3000,debug=True)

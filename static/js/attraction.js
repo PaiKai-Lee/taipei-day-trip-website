@@ -1,52 +1,63 @@
 // 照片更換切換函式
-let cahnge_img=()=>{
+let change_img = () => {
     let next_photo = document.getElementById("next");
     let prev_photo = document.getElementById("prev");
     let images = document.getElementsByClassName("photos")
     let image_num = images.length
-    console.log(image_num)
     let radio = document.getElementsByName("radio_img");
     let i = 0;
-    let show_image = (n) => {
+    let show_image = (n = 0) => {
         images[n].style.display = "block"
     }
     let close_image = (n) => {
         images[n].style.display = "none"
     }
-    show_image(i);
-    radio[i].checked = true;
+    let show_radio = (n = 0) => {
+        radio[n].checked = true;
+    }
+    show_image();
+    show_radio();
+    // 上,下張圖點擊事件
     next_photo.addEventListener("click", () => {
-        close_image(i);
-        if (i < image_num - 1) {
-            show_image(i + 1);
-            radio[i + 1].checked = true;
-            i = i + 1;
-        } else {
+        for (let j = 0; j < image_num; j++) {
+            close_image(j);
+        }
+        i++;
+        if (i > image_num - 1) {
             i = 0;
-            show_image(i);
-            radio[i].checked = true;
-        };
+        }
+        show_image(i);
+        show_radio(i);
     });
     prev_photo.addEventListener("click", () => {
-        close_image(i);
-        if (i > 0) {
-            show_image(i - 1);
-            radio[i - 1].checked = true;
-            i = i - 1;
-        } else {
+        for (let j = 0; j < image_num; j++) {
+            close_image(j);
+        }
+        i--;
+        if (i < 0) {
             i = image_num - 1;
-            radio[i].checked = true;
-            show_image(i);
-        };
+        }
+        show_image(i);
+        show_radio(i);
     });
+    //radio點選圖
+    for (let x = 0; x < image_num; x++) {
+        radio[x].addEventListener("click", () => {
+            for (let j = 0; j < image_num; j++) {
+                close_image(j);
+            }
+            show_image(x);
+            i = x;//i = 當下圖片
+        });
+    };
 };
 
 // Ajax載入
-function init() {
+window.onload=()=>{
     let url_path = window.location.pathname;
-    console.log(url_path);
-    id=url_path.split("/")[2]
-    url="http://13.115.37.65:3000/api/attraction/"+id
+    id = url_path.split("/")[2];
+    console.log(id);
+    url = "http://13.115.37.65:3000/api/attraction/" + id
 
 
     fetch(url)
@@ -91,20 +102,20 @@ function init() {
             let radio_container = document.getElementById("slider_radio");
             for (let i = 0; i < photos.length; i++) {
                 let radio = document.createElement("input");
-                radio.type = "radio"; radio.name = "radio_img"; radio.disabled = true;
-                radio_container.appendChild(radio); 
-                let img_div=document.createElement("div");
-                img_div.className="photos"
-                let img=document.createElement("img");
-                img.src=photos[i];
+                radio.type = "radio"; radio.name = "radio_img";// radio.disabled = true;
+                radio_container.appendChild(radio);
+                let img_div = document.createElement("div");
+                img_div.className = "photos"
+                let img = document.createElement("img");
+                img.src = photos[i];
                 img_div.appendChild(img);
                 image_cotainer.appendChild(img_div);
             };
         })
-        .then(function(){
-            cahnge_img();
+        .then(function () {
+            change_img();
         });
-    
+
     // 費用變換
     document.getElementById("morning").addEventListener("click", () => {
         let money = document.getElementById("money");
