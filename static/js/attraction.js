@@ -102,8 +102,12 @@ window.onload=()=>{
             let radio_container = document.getElementById("slider_radio");
             for (let i = 0; i < photos.length; i++) {
                 let radio = document.createElement("input");
-                radio.type = "radio"; radio.name = "radio_img";// radio.disabled = true;
+                radio.type = "radio"; radio.name = "radio_img";radio.id="r"+i
+                let label_radio=document.createElement("label");
+                label_radio.htmlFor="r"+i.toString();label_radio.className="label_radio";
                 radio_container.appendChild(radio);
+                radio_container.appendChild(label_radio);
+                
                 let img_div = document.createElement("div");
                 img_div.className = "photos"
                 let img = document.createElement("img");

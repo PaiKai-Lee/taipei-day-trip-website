@@ -103,9 +103,34 @@ body hr{
     transform: translateX(-50%);
     display: inline-block;
     text-align: center;
+    
 }
-input[name="radio_img"]{
+.label_radio{
+    width:13px;
+    height: 13px;
+    border-radius: 50%;
+    background-color: rgb(255, 255, 255,0.8);
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
     margin: 5px;
+}
+.label_radio::before{
+    content: "";
+    width:10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: transparent;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+input[name="radio_img"]:checked + .label_radio::before{background-color: black}
+input[name="radio_img"]{
+    /* margin: 5px; */
+    display: none;
 }
 #next {
     right: 0;
