@@ -135,9 +135,17 @@ footer{
     background: #757575
 }
 /* 彈出式登入框 */
-#login-dialog{
+#layer{
+    position: fixed;
+    top:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0,0.7);
+    z-index: 2;
+    display: none;
+}
+#login-dialog,#signup-dialog{
     width: 340px;
-    height: 275px;
     background-color: white;
     color: gray;
     position: fixed;
@@ -145,11 +153,13 @@ footer{
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 6px;
-    z-index: 2;
+    z-index: 3;
     font-weight: 800;
     display: none;
     animation: smooth .5s ;
 }
+
+
 .login-fram{
     padding: 15px;
     display: flex;
@@ -167,7 +177,7 @@ footer{
     height: 10px;
     border-radius: 6px 6px 0 0;
 }
-#login-dialog form{
+#login-dialog form,#signup-dialog form{
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -179,19 +189,24 @@ footer{
     border-radius: 5px;
     padding-left: 10px;
 }
-#login-btn{
+#login-btn,#signup-btn{
     display: block;
     background-color:#448899;
     color: white;
+    font-size: larger;
     height: 47px;
     margin: 5px;
     border-radius: 5px;
+    cursor: pointer;
 }
-#login-close{
+.close{
     position: absolute;
     top: 22px;
     right: 10px;
     font-size: larger;
+    cursor: pointer;
+}
+#goToSignup,#goToLogin{
     cursor: pointer;
 }
 

@@ -1,8 +1,8 @@
-let Domain="http://13.115.37.65:3000"
+let Domain = "http://127.0.0.1:3000"
 // 載入資料函式
 let add_content = (item_len, myJson) => {
     for (i = 0; i < item_len; i++) {
-        let view_id=myJson["data"][i]["id"].toString();
+        let view_id = myJson["data"][i]["id"].toString();
         let title = myJson["data"][i]["name"];
         let mrt = myJson["data"][i]["mrt"];
         let cat = myJson["data"][i]["category"];
@@ -22,11 +22,11 @@ let add_content = (item_len, myJson) => {
         p_cat.textContent = cat;
         image_name.className = "cat1";
         div_cat.className = "cat";
-        let image_link=document.createElement("a")
-        let attraction_url=Domain+"/attraction/"+view_id;
-        image_link.href=attraction_url;
+        let image_link = document.createElement("a")
+        let attraction_url = Domain + "/attraction/" + view_id;
+        image_link.href = attraction_url;
 
-        
+
         image_link.appendChild(container_image)
         content_wrap.appendChild(div_container);
         div_container.appendChild(image_link);
@@ -38,8 +38,9 @@ let add_content = (item_len, myJson) => {
 }
 let nextPage = 0;
 let keyword = "";
-window.onload=()=>{
-    fetch(Domain+'/api/attractions')
+// load事件
+window.onload = () => {
+    fetch(Domain + '/api/attractions')
         .then(function (response) {
             return response.json();
         })
@@ -47,6 +48,13 @@ window.onload=()=>{
             nextPage = myJson["nextPage"];
             let item_len = myJson["data"].length;
             add_content(item_len, myJson);
+            return fetch(Domain + '/api/user')
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (myJson) {
+                    console.log(myJson)
+                });
         });
 
     // 景點查詢
@@ -58,7 +66,7 @@ window.onload=()=>{
         content_wrap.innerHTML = "";
         keyword = view_name.value;
         let params = { page: nextPage, keyword: keyword }
-        let url = new URL(Domain+"/api/attractions")
+        let url = new URL(Domain + "/api/attractions")
         url.search = new URLSearchParams(params).toString();
         fetch(url)
             .then(function (response) {
@@ -81,13 +89,70 @@ window.onload=()=>{
     let show_login = document.getElementById("show_login");
     show_login.addEventListener("click", () => {
         document.getElementById("login-dialog").style.display = "block"
-    })
-    let close_login = document.getElementById("login-close");
-    close_login.addEventListener("click", () => {
+        document.getElementById("layer").style.display="block"
+    });
+    let close_login = document.querySelectorAll(".close");
+    close_login.forEach(item => {
+        item.addEventListener("click", () => {
+            document.getElementById("login-dialog").style.display = "none"
+            document.getElementById("signup-dialog").style.display = "none"
+            document.getElementById("layer").style.display="none"
+            
+        });
+    });
+    let go_to_signup = document.getElementById("goToSignup");
+    go_to_signup.addEventListener("click", () => {
         document.getElementById("login-dialog").style.display = "none"
-    })
+        document.getElementById("signup-dialog").style.display = "block"
+        let status=document.getElementById("status")
+        status.textContent="";
+    });
+    let go_to_login = document.getElementById("goToLogin");
+    go_to_login.addEventListener("click", () => {
+        document.getElementById("login-dialog").style.display = "block"
+        document.getElementById("signup-dialog").style.display = "none"
+    });
 
-}
+    document.getElementById("login-btn").addEventListener("click", () => {
+        let login_email = document.getElementById("login-email");
+        let login_password = document.getElementById("login-password");
+
+    })
+    // 註冊新帳號
+    document.getElementById("signup-btn").addEventListener("click", () => {
+        let signup_user = document.getElementById("signup-user");
+        let signup_email = document.getElementById("signup-email");
+        let signup_password = document.getElementById("signup-password");
+        fetch(Domain + "/api/user", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "name": signup_user.value,
+                "email": signup_email.value,
+                "password": signup_password.value
+            })
+        })
+            .then(function (response) {
+                if (!response.ok){
+                    throw response
+                }
+                return response.json();
+            })
+            .then(function (myJson) {
+                let status=document.getElementById("status")
+                status.style.color="green";
+                status.textContent="註冊成功";
+            })
+            .catch(function(error){
+                return error.json()
+            })
+            .then(function(errJson){
+                console.log(errJson["error"],errJson["message"])
+            })
+
+    })
+};
+
 //debounce function
 let debounce = (fn, delay) => {
     let timeoutID;
@@ -110,7 +175,7 @@ window.addEventListener("scroll", debounce(e => {
     if (scrolled > load_trigger) {
         if (nextPage != null) {
             let params = { page: nextPage, keyword: keyword }
-            let url = new URL(Domain+"/api/attractions")
+            let url = new URL(Domain + "/api/attractions")
             url.search = new URLSearchParams(params).toString()
             fetch(url)
                 .then(function (response) {

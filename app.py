@@ -8,6 +8,7 @@ app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.config['JSON_SORT_KEYS'] = False
+app.secret_key=b'[u\r\x95\\\xcc[\x0e\xd8\xa5\xdc\xf5B}\x8d\x82'
 
 mydb=mysql.connector.connect(
     host="localhost",
@@ -98,10 +99,55 @@ def apiAttraction(attractionId):
 #使用者API
 @app.route("/api/user",methods=["GET","POST"])
 def user():
+	# 取得使用者
 	if request.method == "GET":
-		return jsonify({"data":"Getdata"})
-	if request.method == "POST":
-		return jsonify({"ok":True})
+		# if "user" in session:
+		# 	print(session["user"])
+			return jsonify({"data":"Getdata"})
+	#註冊新帳號
+	if request.method == "POST":  
+		user=request.get_json()["name"]
+		user_email=request.get_json()["email"]
+		user_password=request.get_json()["password"]
+		if user=="" or user_email=="" or user_password=="":
+			return jsonify({"error":True,"message":"註冊資料不可空白"}),400
+
+		mycursor.execute("SELECT email FROM users where email = %s",(user_email,))
+		DBuser=mycursor.fetchone() 
+		if DBuser != None:
+			return jsonify({"error":True,"message":"註冊失敗，重複的 Email"}),400
+
+		sql=("INSERT INTO users(name,email,password) VALUES (%s,%s,%s)")
+		val=(user,user_email,user_password)
+		mycursor.execute(sql,val) 
+		mydb.commit()
+		return jsonify({"ok":True}),200  
+	#登入會員
+	if request.method == "PATCH":
+		user_email=request.get_json()["email"]
+		user_password=request.get_json()["password"]
+		mycursor.execute("SELECT email,password FROM users where email= %s",(user_email,))
+		DBuser=mycursor.fetchone() 
+		if  user_password != DBuser[1] or user_email != DBuser[0] or DBuser==None :
+			return jsonify({"error":True,"message":"登入失敗，帳號或密碼錯誤"})
+		elif user_password==DBuser[1]:
+			session["user"]=user_email
+			session.permanent=True
+			print(session["user"])
+			return jsonify({"ok":True})
+		else:
+			return jsonify({"error":True,"message":"伺服器內部錯誤"}),500
+	# 登出帳號
+	if request.method=="DELETE":
+		session.pop("user",None)
+		return jsonify({"ok",True})
+		
+
+
+		
+		
+
+
 
 if __name__=="__main__":
 	app.run(host="0.0.0.0",port=3000,debug=True)
