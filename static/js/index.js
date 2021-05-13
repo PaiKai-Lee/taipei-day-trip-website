@@ -1,4 +1,4 @@
-let Domain = "http://127.0.0.1:3000"
+let Domain = "http://13.115.37.65:3000"
 // 載入資料函式
 let add_content = (item_len, myJson) => {
     for (i = 0; i < item_len; i++) {
@@ -38,7 +38,7 @@ let add_content = (item_len, myJson) => {
 }
 let nextPage = 0;
 let keyword = "";
-// load事件
+//進入網頁load事件
 window.onload = () => {
     fetch(Domain + '/api/attractions')
         .then(function (response) {
@@ -48,12 +48,20 @@ window.onload = () => {
             nextPage = myJson["nextPage"];
             let item_len = myJson["data"].length;
             add_content(item_len, myJson);
+            //GET user API
             return fetch(Domain + '/api/user')
                 .then(function (response) {
                     return response.json();
                 })
                 .then(function (myJson) {
-                    console.log(myJson)
+                    if (myJson["data"]==null){
+                        document.getElementById("logout").style.display="none";
+                        document.getElementById("show_login").style.display="inline-block";
+                    }
+                    else{
+                        document.getElementById("logout").style.display="inline-block";
+                        document.getElementById("show_login").style.display="none";
+                    }
                 });
         });
 
@@ -88,36 +96,60 @@ window.onload = () => {
     //彈出式對話框
     let show_login = document.getElementById("show_login");
     show_login.addEventListener("click", () => {
-        document.getElementById("login-dialog").style.display = "block"
-        document.getElementById("layer").style.display="block"
+        document.getElementById("login-dialog").style.display = "block";
+        document.getElementById("layer").style.display="block";
+        let login_status=document.getElementById("login-status");
+        let status=document.getElementById("status");
+        login_status.textContent="";
+        status.textContent="";
     });
     let close_login = document.querySelectorAll(".close");
     close_login.forEach(item => {
         item.addEventListener("click", () => {
-            document.getElementById("login-dialog").style.display = "none"
-            document.getElementById("signup-dialog").style.display = "none"
-            document.getElementById("layer").style.display="none"
-            
+            document.getElementById("login-dialog").style.display = "none";
+            document.getElementById("signup-dialog").style.display = "none";
+            document.getElementById("layer").style.display="none";
         });
     });
     let go_to_signup = document.getElementById("goToSignup");
     go_to_signup.addEventListener("click", () => {
-        document.getElementById("login-dialog").style.display = "none"
-        document.getElementById("signup-dialog").style.display = "block"
-        let status=document.getElementById("status")
+        document.getElementById("login-dialog").style.display = "none";
+        document.getElementById("signup-dialog").style.display = "block";
+        let status=document.getElementById("status");
         status.textContent="";
     });
     let go_to_login = document.getElementById("goToLogin");
     go_to_login.addEventListener("click", () => {
-        document.getElementById("login-dialog").style.display = "block"
-        document.getElementById("signup-dialog").style.display = "none"
+        document.getElementById("login-dialog").style.display = "block";
+        document.getElementById("signup-dialog").style.display = "none";
+        let login_status=document.getElementById("login-status")
+        login_status.textContent="";
     });
-
+    //登入會員
     document.getElementById("login-btn").addEventListener("click", () => {
         let login_email = document.getElementById("login-email");
         let login_password = document.getElementById("login-password");
-
-    })
+        fetch(Domain + "/api/user",{
+            method:"PATCH",
+            headers:{ 'Content-Type': 'application/json' },
+            body:JSON.stringify({
+                "email":login_email.value,
+                "password":login_password.value
+            })
+        })
+        .then(function(response){
+            return response.json()
+        })
+        .then(function(myJson){
+            console.log(myJson)
+            let status=document.getElementById("login-status")
+            status.style.color="green";
+            status.textContent="登入成功";
+            setTimeout(()=>{history.go(0);},1000);
+            document.getElementById("logout").style.display="inline-block";
+            document.getElementById("show_login").style.display="none";
+        })
+    });
     // 註冊新帳號
     document.getElementById("signup-btn").addEventListener("click", () => {
         let signup_user = document.getElementById("signup-user");
@@ -134,22 +166,40 @@ window.onload = () => {
         })
             .then(function (response) {
                 if (!response.ok){
-                    throw response
+                    throw response;
                 }
                 return response.json();
             })
-            .then(function (myJson) {
+            .then(function () {
                 let status=document.getElementById("status")
                 status.style.color="green";
                 status.textContent="註冊成功";
+                console.log("成功")
             })
             .catch(function(error){
+                console.log(error)
                 return error.json()
+                .then(function(errJson){
+                    let status=document.getElementById("status")
+                    status.style.color="red";
+                    status.textContent=errJson["message"];
+                })
             })
-            .then(function(errJson){
-                console.log(errJson["error"],errJson["message"])
-            })
-
+    })
+    // 登出會員
+    document.getElementById("logout").addEventListener("click",()=>{
+        fetch(Domain + "/api/user",{
+            method:"DELETE",
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(function(response){
+            return response.json()
+        })
+        .then(function(myJson){
+            document.getElementById("logout").style.display="none"
+            document.getElementById("show_login").style.display="inline-block"
+            history.go(0);
+        })
     })
 };
 

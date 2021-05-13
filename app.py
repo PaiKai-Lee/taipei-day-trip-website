@@ -2,13 +2,14 @@ from flask import *
 import mysql.connector
 import json
 import os
+import re
 
 
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.config['JSON_SORT_KEYS'] = False
-app.secret_key=b'[u\r\x95\\\xcc[\x0e\xd8\xa5\xdc\xf5B}\x8d\x82'
+app.secret_key=os.environ.get("session_key")
 
 mydb=mysql.connector.connect(
     host="localhost",
@@ -97,21 +98,31 @@ def apiAttraction(attractionId):
 	return jsonify({"data":data})
 
 #使用者API
-@app.route("/api/user",methods=["GET","POST"])
+@app.route("/api/user",methods=["GET","POST","PATCH","DELETE"])
 def user():
 	# 取得使用者
 	if request.method == "GET":
-		# if "user" in session:
-		# 	print(session["user"])
-			return jsonify({"data":"Getdata"})
+		if "user" in session:
+			print("使用者: "+session["user"])
+			mycursor.execute("SELECT user_id,name,email FROM users where email = %s",(session["user"],))
+			DBuser=mycursor.fetchone() 
+			return jsonify({"data":{
+				"id":DBuser[0],
+				"name":DBuser[1],
+				"email":DBuser[2]
+			}})
+		else:
+			return jsonify({"data":None})
 	#註冊新帳號
 	if request.method == "POST":  
 		user=request.get_json()["name"]
 		user_email=request.get_json()["email"]
 		user_password=request.get_json()["password"]
+		validation=re.compile(r"[^@]+@[^@]+\.[^@]+")
 		if user=="" or user_email=="" or user_password=="":
 			return jsonify({"error":True,"message":"註冊資料不可空白"}),400
-
+		if validation.match(user_email)==None:
+			return jsonify({"error":True,"message":"Email格式不正確"}),400
 		mycursor.execute("SELECT email FROM users where email = %s",(user_email,))
 		DBuser=mycursor.fetchone() 
 		if DBuser != None:
@@ -128,19 +139,19 @@ def user():
 		user_password=request.get_json()["password"]
 		mycursor.execute("SELECT email,password FROM users where email= %s",(user_email,))
 		DBuser=mycursor.fetchone() 
-		if  user_password != DBuser[1] or user_email != DBuser[0] or DBuser==None :
+		if DBuser==None or user_password != DBuser[1] or user_email != DBuser[0]:
 			return jsonify({"error":True,"message":"登入失敗，帳號或密碼錯誤"})
 		elif user_password==DBuser[1]:
 			session["user"]=user_email
 			session.permanent=True
-			print(session["user"])
 			return jsonify({"ok":True})
 		else:
 			return jsonify({"error":True,"message":"伺服器內部錯誤"}),500
 	# 登出帳號
 	if request.method=="DELETE":
+		print("登出成功")
 		session.pop("user",None)
-		return jsonify({"ok",True})
+		return jsonify({"ok":True})
 		
 
 

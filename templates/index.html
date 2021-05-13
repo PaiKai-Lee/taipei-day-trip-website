@@ -15,10 +15,11 @@
 <body>
     <header>
         <div class="header_fram">
-            <h1>台北一日遊</h1>
+            <a href="/" style="text-decoration: none;"><h1>台北一日遊</h1></a>
             <div>
                 <p class="dialog">預定行程</p>
                 <p class="dialog" id="show_login">登入/註冊</p>
+                <p class="dialog" id="logout">登出系統</p>
             </div>
         </div>
     </header>
@@ -47,6 +48,7 @@
                     <input type="password" placeholder="輸入密碼" class="login-info" name="login-password" id="login-password" required>
                     <button type="button" id="login-btn">登入帳戶</button>
                 </form>
+                <p id="login-status"></p>
                 <p id="goToSignup">還沒有帳戶?點此註冊</p>
             </div>
     </div>

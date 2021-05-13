@@ -8,6 +8,7 @@ body{
     font-size: 16px;
     padding-top: 40px;
 }
+/* 置頂bar */
 header{
     width: 100%;
     display: flex;
@@ -36,6 +37,14 @@ h1{
     color: Gray;
     display: inline-block;
     cursor: pointer;
+    transition: 0.3s;
+}
+.dialog:hover{
+    font-weight: bolder;
+    color:black;
+}
+#logout{
+    display: none;
 }
 .banner{
     height: 320px;
@@ -156,9 +165,8 @@ footer{
     z-index: 3;
     font-weight: 800;
     display: none;
-    animation: smooth .5s ;
+    animation: login .5s ;
 }
-
 
 .login-fram{
     padding: 15px;
@@ -210,7 +218,7 @@ footer{
     cursor: pointer;
 }
 
-@keyframes smooth{
+@keyframes login{
     0% {
         display: none;
         top: 190px;
