@@ -8,6 +8,7 @@ body{
     font-size: 16px;
     color: #666666;
     box-sizing: border-box;
+    padding-top: 40px;
 }
 /* 置頂bar */
 header{
@@ -38,9 +39,14 @@ h1{
     color: Gray;
     display: inline-block;
     cursor: pointer;
+    transition: 0.3s;
 }
-body{
-    padding-top: 40px;
+.dialog:hover{
+    font-weight: bolder;
+    color:black;
+}
+#logout{
+    display: none;
 }
 body hr{
     border: solid #E8E8E8 1px;
@@ -77,6 +83,13 @@ body hr{
     display: none;
 }
 .photos img{
+    animation: smooth .1s;
+}
+@keyframes smooth{
+    0%{height: 50%;width: 50%;}
+    100%{height: 100%;width: 100%;}
+}
+.photos img{
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -96,9 +109,34 @@ body hr{
     transform: translateX(-50%);
     display: inline-block;
     text-align: center;
+    
 }
-input[name="radio_img"]{
+.label_radio{
+    width:13px;
+    height: 13px;
+    border-radius: 50%;
+    background-color: rgb(255, 255, 255,0.8);
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
     margin: 5px;
+}
+.label_radio::before{
+    content: "";
+    width:10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: transparent;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+input[name="radio_img"]:checked + .label_radio::before{background-color: black}
+input[name="radio_img"]{
+    /* margin: 5px; */
+    display: none;
 }
 #next {
     right: 0;
@@ -205,6 +243,93 @@ footer{
     height: 104px;
     background-color: #757575;
     color: white;
+}
+/* 彈出式登入框 */
+#layer{
+    position: fixed;
+    top:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0,0.7);
+    z-index: 2;
+    display: none;
+}
+#login-dialog,#signup-dialog{
+    width: 340px;
+    background-color: white;
+    color: gray;
+    position: fixed;
+    top: 210px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 6px;
+    z-index: 3;
+    font-weight: 800;
+    display: none;
+    animation: login .5s;
+}
+
+
+.login-fram{
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.login-fram h3{
+    margin-bottom: 10px;
+    font-weight: bolder;
+}
+.login-top{
+    background: linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
+    width: 100%;
+    height: 10px;
+    border-radius: 6px 6px 0 0;
+}
+#login-dialog form,#signup-dialog form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.login-info{
+    height: 47px;
+    margin: 5px;
+    border: gray 1px solid;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+#login-btn,#signup-btn{
+    display: block;
+    background-color:#448899;
+    color: white;
+    font-size: larger;
+    height: 47px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.close{
+    position: absolute;
+    top: 22px;
+    right: 10px;
+    font-size: larger;
+    cursor: pointer;
+}
+#goToSignup,#goToLogin{
+    cursor: pointer;
+}
+@keyframes login{
+    0% {
+        display: none;
+        top: 190px;
+        opacity: 0.5;
+    }
+    100% {
+        display: block;
+        top: 210px;
+        opacity: 1;
+    }
 }
 @media screen and (max-width:1200px){
     .wrap .side{
