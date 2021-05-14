@@ -1,4 +1,4 @@
-let Domain = "http://13.115.37.65:3000"
+let Domain = "http://127.0.0.1:3000"
 // 載入資料函式
 let add_content = (item_len, myJson) => {
     for (i = 0; i < item_len; i++) {
@@ -138,6 +138,9 @@ window.onload = () => {
             })
         })
         .then(function(response){
+            if (!response.ok){
+                throw response;
+            }
             return response.json()
         })
         .then(function(myJson){
@@ -148,6 +151,15 @@ window.onload = () => {
             setTimeout(()=>{history.go(0);},1000);
             document.getElementById("logout").style.display="inline-block";
             document.getElementById("show_login").style.display="none";
+        })
+        .catch(function(error){
+            console.log(error)
+            return error.json()
+            .then(function(errJson){
+                let status=document.getElementById("login-status")
+                status.style.color="red";
+                status.textContent=errJson["message"];
+            })
         })
     });
     // 註冊新帳號

@@ -140,24 +140,20 @@ def user():
 		mycursor.execute("SELECT email,password FROM users where email= %s",(user_email,))
 		DBuser=mycursor.fetchone() 
 		if DBuser==None or user_password != DBuser[1] or user_email != DBuser[0]:
-			return jsonify({"error":True,"message":"登入失敗，帳號或密碼錯誤"})
+			return jsonify({"error":True,"message":"登入失敗，帳號或密碼錯誤"}),400
 		elif user_password==DBuser[1]:
 			session["user"]=user_email
 			session.permanent=True
 			return jsonify({"ok":True})
 		else:
 			return jsonify({"error":True,"message":"伺服器內部錯誤"}),500
+
 	# 登出帳號
 	if request.method=="DELETE":
 		print("登出成功")
 		session.pop("user",None)
 		return jsonify({"ok":True})
 		
-
-
-		
-		
-
 
 
 if __name__=="__main__":
