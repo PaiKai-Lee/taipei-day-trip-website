@@ -1,4 +1,4 @@
-let Domain = "http://13.115.37.65:3000"
+let Domain = "http://127.0.0.1:3000"
 // 照片更換切換函式
 let change_img = () => {
     let next_photo = document.getElementById("next");
@@ -56,8 +56,8 @@ let change_img = () => {
 // Ajax載入
 window.onload = () => {
     let url_path = window.location.pathname;
-    id = url_path.split("/")[2];
-    url = Domain + "/api/attraction/" + id
+    let id = url_path.split("/")[2];
+    let url = Domain + "/api/attraction/" + id
 
     fetch(url)
         .then(function (response) {
@@ -132,6 +132,46 @@ window.onload = () => {
                     }
                 });
         });
+    //開始預訂行程
+    document.getElementById("booking_btn").addEventListener("click", () => {
+        fetch(Domain + '/api/user')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                if (myJson["data"] == null) {
+                    document.getElementById("login-dialog").style.display = "block";
+                    document.getElementById("layer").style.display = "block";
+                    let login_status = document.getElementById("login-status");
+                    let status = document.getElementById("status");
+                    login_status.textContent = "";
+                    status.textContent = "";
+                }
+                else {
+                    let time=document.querySelector('[name=time]:checked');
+                    let date = document.getElementById("date");
+                    fetch(Domain + '/api/booking', {
+                        method: "POST",
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            "attractionId": id,
+                            "date": date.value,
+                            "time":time.id,
+                            "price":time.value,
+                        })
+                    })
+                        .then(function (response) {
+                            return response.json()
+                        })
+                        .then(function (myJson) {
+                            if (myJson["ok"]==true){
+                                window.location.href="/booking"
+                            }
+                        })
+                }
+
+            })
+    })
 
     // 費用變換
     document.getElementById("morning").addEventListener("click", () => {
@@ -147,58 +187,58 @@ window.onload = () => {
     let show_login = document.getElementById("show_login");
     show_login.addEventListener("click", () => {
         document.getElementById("login-dialog").style.display = "block";
-        document.getElementById("layer").style.display="block";
-        let login_status=document.getElementById("login-status");
-        let status=document.getElementById("status");
-        login_status.textContent="";
-        status.textContent="";
+        document.getElementById("layer").style.display = "block";
+        let login_status = document.getElementById("login-status");
+        let status = document.getElementById("status");
+        login_status.textContent = "";
+        status.textContent = "";
     });
     let close_login = document.querySelectorAll(".close");
     close_login.forEach(item => {
         item.addEventListener("click", () => {
             document.getElementById("login-dialog").style.display = "none";
             document.getElementById("signup-dialog").style.display = "none";
-            document.getElementById("layer").style.display="none";
+            document.getElementById("layer").style.display = "none";
         });
     });
     let go_to_signup = document.getElementById("goToSignup");
     go_to_signup.addEventListener("click", () => {
         document.getElementById("login-dialog").style.display = "none";
         document.getElementById("signup-dialog").style.display = "block";
-        let status=document.getElementById("status");
-        status.textContent="";
+        let status = document.getElementById("status");
+        status.textContent = "";
     });
     let go_to_login = document.getElementById("goToLogin");
     go_to_login.addEventListener("click", () => {
         document.getElementById("login-dialog").style.display = "block";
         document.getElementById("signup-dialog").style.display = "none";
-        let login_status=document.getElementById("login-status")
-        login_status.textContent="";
+        let login_status = document.getElementById("login-status")
+        login_status.textContent = "";
     });
     //登入會員
     document.getElementById("login-btn").addEventListener("click", () => {
         let login_email = document.getElementById("login-email");
         let login_password = document.getElementById("login-password");
-        fetch(Domain + "/api/user",{
-            method:"PATCH",
-            headers:{ 'Content-Type': 'application/json' },
-            body:JSON.stringify({
-                "email":login_email.value,
-                "password":login_password.value
+        fetch(Domain + "/api/user", {
+            method: "PATCH",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "email": login_email.value,
+                "password": login_password.value
             })
         })
-        .then(function(response){
-            return response.json()
-        })
-        .then(function(myJson){
-            console.log(myJson)
-            let status=document.getElementById("login-status")
-            status.style.color="green";
-            status.textContent="登入成功";
-            setTimeout(()=>{history.go(0);},1000);
-            document.getElementById("logout").style.display="inline-block";
-            document.getElementById("show_login").style.display="none";
-        })
+            .then(function (response) {
+                return response.json()
+            })
+            .then(function (myJson) {
+                console.log(myJson)
+                let status = document.getElementById("login-status")
+                status.style.color = "green";
+                status.textContent = "登入成功";
+                setTimeout(() => { history.go(0); }, 1000);
+                document.getElementById("logout").style.display = "inline-block";
+                document.getElementById("show_login").style.display = "none";
+            })
     });
     // 註冊新帳號
     document.getElementById("signup-btn").addEventListener("click", () => {
@@ -215,39 +255,39 @@ window.onload = () => {
             })
         })
             .then(function (response) {
-                if (!response.ok){
+                if (!response.ok) {
                     throw response
                 }
                 return response.json();
             })
             .then(function () {
-                let status=document.getElementById("status")
-                status.style.color="green";
-                status.textContent="註冊成功";
+                let status = document.getElementById("status")
+                status.style.color = "green";
+                status.textContent = "註冊成功";
             })
-            .catch(function(error){
+            .catch(function (error) {
                 return error.json()
             })
-            .then(function(errJson){
-                let status=document.getElementById("status")
-                status.style.color="red";
-                status.textContent=errJson["message"];
+            .then(function (errJson) {
+                let status = document.getElementById("status")
+                status.style.color = "red";
+                status.textContent = errJson["message"];
             })
 
     })
     // 登出會員
-    document.getElementById("logout").addEventListener("click",()=>{
-        fetch(Domain + "/api/user",{
-            method:"DELETE",
+    document.getElementById("logout").addEventListener("click", () => {
+        fetch(Domain + "/api/user", {
+            method: "DELETE",
             headers: { 'Content-Type': 'application/json' }
         })
-        .then(function(response){
-            return response.json()
-        })
-        .then(function(myJson){
-            document.getElementById("logout").style.display="none"
-            document.getElementById("show_login").style.display="inline-block"
-            history.go(0);
-        })
+            .then(function (response) {
+                return response.json()
+            })
+            .then(function (myJson) {
+                document.getElementById("logout").style.display = "none"
+                document.getElementById("show_login").style.display = "inline-block"
+                history.go(0);
+            })
     })
 };
