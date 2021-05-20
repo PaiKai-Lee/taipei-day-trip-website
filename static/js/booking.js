@@ -28,7 +28,7 @@ fetch(Domain + "/api/user")
                     document.getElementById("booking_info").innerHTML = ""
                     document.getElementById("no_booking").style.display = "block"
                     let footer = document.getElementsByTagName("footer");
-                    footer[0].style.height="80%"
+                    footer[0].style.height="85%"
                 }
                 else {
                     let view_name = myJson["data"]["attractionId"]["name"];
