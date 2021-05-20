@@ -73,4 +73,5 @@ def user():
     if request.method == "DELETE":
         print("登出成功")
         session.pop("user", None)
+        session.pop("booking_data",None)
         return jsonify({"ok": True})

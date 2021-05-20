@@ -39,6 +39,10 @@ def booking():
 def thankyou():
     return render_template("thankyou.html")
 
+@app.route("/test")
+def test():
+    return render_template("test.html")
+
 #註冊userAPI
 app.register_blueprint(users)
 
