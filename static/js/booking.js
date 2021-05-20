@@ -1,4 +1,4 @@
-let Domain = "http://127.0.0.1:3000"
+let Domain = "http://13.115.37.65:3000"
 fetch(Domain + "/api/user")
     .then(function (response) {
         return response.json()
@@ -27,6 +27,8 @@ fetch(Domain + "/api/user")
                 if (myJson["data"] == null) {
                     document.getElementById("booking_info").innerHTML = ""
                     document.getElementById("no_booking").style.display = "block"
+                    let footer = document.getElementsByTagName("footer");
+                    footer[0].style.height="80%"
                 }
                 else {
                     let view_name = myJson["data"]["attractionId"]["name"];

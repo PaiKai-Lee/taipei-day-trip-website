@@ -3,11 +3,14 @@
     margin: 0;
     box-sizing: border-box;
 }
+html,body{
+    height: 100%;
+}
 body{
     font-family: 'Noto Sans TC', sans-serif;
     font-size: 16px;
     color: #666666;
-    padding-top: 40px;
+    padding-top:40px;
 }
 /* 置頂bar */
 header{
@@ -137,10 +140,9 @@ h1{
 }
 
 footer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
+    line-height: 104px;
     color: white;
-    height: 104px;
-    background: #757575
+    min-height: 104px;
+    background: #757575;
 }
