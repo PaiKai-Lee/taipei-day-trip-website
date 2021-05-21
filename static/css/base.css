@@ -1,0 +1,148 @@
+*{
+    border: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+html,body{
+    height: 100%;
+}
+body{
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 16px;
+    color: #666666;
+    padding-top:40px;
+}
+/* 置頂bar */
+header{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+}
+.header_fram{
+    width: 1200px;
+    max-width: 100%;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+}
+h1{
+    font-size: 30px;
+    color: #448899;
+    font-family: 'Noto Sans', sans-serif;
+}
+.dialog{
+    margin-right: 5px;
+    text-decoration: none;
+    color: Gray;
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.dialog:hover{
+    font-weight: bolder;
+    color:black;
+}
+#logout{
+    display: none;
+}
+
+/* 彈出式登入框 */
+#layer{
+    position: fixed;
+    top:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0,0.7);
+    z-index: 2;
+    display: none;
+}
+#login-dialog,#signup-dialog{
+    width: 340px;
+    background-color: white;
+    color: gray;
+    position: fixed;
+    top: 210px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 6px;
+    z-index: 3;
+    font-weight: 800;
+    display: none;
+    animation: login .5s ;
+}
+
+.login-fram{
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.login-fram h3{
+    margin-bottom: 10px;
+    font-weight: bolder;
+}
+.login-top{
+    background: linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
+    width: 100%;
+    height: 10px;
+    border-radius: 6px 6px 0 0;
+}
+#login-dialog form,#signup-dialog form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.login-info{
+    height: 47px;
+    margin: 5px;
+    border: gray 1px solid;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+#login-btn,#signup-btn{
+    display: block;
+    background-color:#448899;
+    color: white;
+    font-size: larger;
+    height: 47px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.close{
+    position: absolute;
+    top: 22px;
+    right: 10px;
+    font-size: larger;
+    cursor: pointer;
+}
+#goToSignup,#goToLogin{
+    cursor: pointer;
+}
+
+@keyframes login{
+    0% {
+        display: none;
+        top: 190px;
+        opacity: 0.5;
+    }
+    100% {
+        display: block;
+        top: 210px;
+        opacity: 1;
+    }
+}
+
+footer{
+    text-align: center;
+    line-height: 104px;
+    color: white;
+    min-height: 104px;
+    background: #757575;
+}

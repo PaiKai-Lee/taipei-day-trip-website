@@ -1,0 +1,110 @@
+
+body hr{
+    width: 100%;
+    border: solid #E8E8E8 1px;
+}
+main{
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 95%;
+}
+h2{
+    margin: 25px auto;
+    width: 1030px;
+    max-width: 100%;
+}
+.wrap,#no_booking{
+    margin: 25px auto;
+    width: 1000px;
+    max-width: 100%;
+}
+#no_booking{
+    display: none;
+}
+.container{
+    display: flex;
+    position: relative;
+    max-width: 100%;
+    flex-wrap: wrap;
+}
+.delete{
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+}
+.img{
+    width: 266px;
+    height: 200px;
+    border: black solid 1px;
+}
+.img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.wrap label{
+    display: block;
+    margin: 7px 0;
+    width: fit-content;
+}
+.wrap input{
+    height: 38px;
+    width: 200px;
+    border: 1px solid #E8E8E8;
+    border-radius: 5px;
+}
+.wrap h3{
+    line-height: 40px;
+}
+.booking_data{
+    margin-left: 22px;
+    line-height: 35px;
+}
+.booking_data h4{
+    margin-bottom: 10px;
+}
+
+.payment{
+    text-align: right;
+}
+.pay button{
+    width: 173px;
+    height: 36px;
+    border-radius: 5px;
+    background-color: #448899;
+    color:white;
+    font-size: 16px;
+}
+@keyframes login{
+    0% {
+        display: none;
+        top: 190px;
+        opacity: 0.5;
+    }
+    100% {
+        display: block;
+        top: 210px;
+        opacity: 1;
+    }
+}
+@media screen and (max-width:600px)  {
+    .wrap{
+        margin: 30px auto;
+    }
+    .img{
+        margin-bottom: 15px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+    .booking_data{
+        margin: auto;
+        width: 100%;
+    }
+    .delete{
+        top:auto;
+        bottom: -20px;
+    }
+}

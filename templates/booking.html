@@ -1,12 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "base.html"%}
+{% block css%}
+<link rel="stylesheet" href="/static/css/booking.css">
+{% endblock %}
+{% block js%}
+<script defer src="/static/js/booking.js"></script>
+{% endblock%}
+{% block main %}
+<h2>你好，<span id="user_name"></span>，待預定行程如下:</h2>
+<p id="no_booking">目前沒有任何待預訂的行程</p>
+<div id="booking_info">
+    <div class="wrap">
+        <div class="container">
+            <div class="delete" id="delete"><img src="/static/img/icon_delete.png" alt=""></div>
+            <div class="img" id="img_container">
+                <!-- 載入照片 -->
+            </div>
+            <div class="booking_data">
+                <h4>台北一日遊:<span id="view_name"></span></h4>
+                <p>日期: <span id="date"></span></p>
+                <p>時間: <span id="time"></span></p>
+                <p>費用: <span id="price"></span></p>
+                <p>地點: <span id="view_address"></span></p>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="wrap">
+        <h3>你的聯絡資訊</h3>
+        <label>聯絡姓名: <input id="booking_name" type="text"></label>
+        <label>聯絡信箱: <input id="booking_email" type="text"></label>
+        <label>手機號碼: <input type="text"></label>
+        <p>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
+    </div>
+    <hr>
+    <div class="wrap">
+        <h3>信用卡付款資訊</h3>
+        <label>卡片號碼: <input type="text"></label>
+        <label>過期時間: <input type="text"></label>
+        <label>驗證密碼: <input type="text"></label>
+    </div>
+    <hr>
+    <div class="wrap payment">
+        <div class="pay">
+            <p>總價: <span id="total"></span></p>
+            <button>確認訂購並付款</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
