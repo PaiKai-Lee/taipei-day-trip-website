@@ -77,6 +77,14 @@ h2{
     color:white;
     font-size: 16px;
 }
+.tpfield {
+    height: 40px;
+    width: 300px;
+    border: 1px solid gray;
+    margin: 5px 0;
+    padding: 5px;  
+    border-radius:6px
+}
 @keyframes login{
     0% {
         display: none;
