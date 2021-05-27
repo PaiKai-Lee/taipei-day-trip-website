@@ -1,0 +1,30 @@
+.container{
+    margin: 30px auto;
+    text-align: center;
+    width: 500px;
+    max-width: 95%;
+    height: 200px;
+    line-height: 40px;
+}
+main img{
+    width: 60px;
+    height: 60px;
+}
+#home{
+    margin-top: 10px;
+    width: 90px;
+    height:40px;
+    font-size: 16px;
+    border-radius: 10px;
+    color: white;
+    background-color: #448899;;
+    cursor: pointer;
+    box-shadow: 0px 0px 6px #555555;
+    transition: .1s;
+}
+#home:active{
+    width: 81px;
+    height:36px;
+    font-size: 15px;
+    box-shadow: 0px 0px 0px #555555;
+}

@@ -3,6 +3,7 @@ import mysql.connector,json,os
 from api.users import users
 from api.att import att
 from api.res import res
+from api.pay import pay
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
@@ -47,6 +48,9 @@ app.register_blueprint(att)
 
 # 預定行程API
 app.register_blueprint(res)
+
+# 註冊訂單付款API
+app.register_blueprint(pay)
 
 
 
