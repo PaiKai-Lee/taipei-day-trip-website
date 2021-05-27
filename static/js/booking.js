@@ -1,5 +1,4 @@
-const Domain = "http://127.0.0.1:3000"
-let contact
+const Domain = "http://13.115.37.65:3000"
 let orders
 fetch(Domain + "/api/user")
     .then(function (response) {
@@ -19,7 +18,6 @@ fetch(Domain + "/api/user")
             document.getElementById("user_name").textContent = user_name;
             document.getElementById("booking_name").value = user_name;
             document.getElementById("booking_email").value = user_email;
-            contact={"name":user_name,"email":user_email};
         }
         fetch(Domain + "/api/booking")
             .then(function (response) {
@@ -30,7 +28,8 @@ fetch(Domain + "/api/user")
                     document.getElementById("booking_info").innerHTML = ""
                     document.getElementById("no_booking").style.display = "block"
                     let footer = document.getElementsByTagName("footer");
-                    footer[0].style.height = "85%"
+                    footer[0].style.height = "100%"
+                    document.getElementsByTagName("body")[0].style.overflowY="hidden";
                 }
                 else {
                     let id = myJson["data"]["attractionId"]["id"];
@@ -139,19 +138,23 @@ TPDirect.card.setup({
 });
 //金流
 document.getElementById("paySubmit").addEventListener("click", (event) => {
+    let contact={
+        "name":document.getElementById("booking_name").value,
+        "email":document.getElementById("booking_email").value
+    };
     event.preventDefault()
-
     // 取得 TapPay Fields 的 status
     const tappayStatus = TPDirect.card.getTappayFieldsStatus()
-
+    console.log(tappayStatus)
     // 確認是否可以 getPrime
     if (tappayStatus.canGetPrime === false) {
-        alert('can not get prime')
+        alert('信用卡資料錯誤')
         return
     }
 
     // Get prime
     TPDirect.card.getPrime((result) => {
+        console.log(result)
         if (result.status !== 0) {
             alert('get prime error ' + result.msg)
             return
@@ -173,7 +176,15 @@ document.getElementById("paySubmit").addEventListener("click", (event) => {
             return res.json()
         })
         .then((myJson)=>{
-            console.log(myJson)
+            let po=myJson["data"]["number"]
+            let params = { number: po}
+            let url = new URL(Domain + "/thankyou")
+            url.search = new URLSearchParams(params).toString()
+            if (myJson["data"]["payment"]["status"]===0){
+                window.location.href = url;
+            }else{
+                alert("訂單編號"+po+"付款失敗")
+            }
         })
     })
 })

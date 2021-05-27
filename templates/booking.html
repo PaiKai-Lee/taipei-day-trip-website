@@ -28,9 +28,9 @@
     <hr>
     <div class="wrap">
         <h3>你的聯絡資訊</h3>
-        <label>聯絡姓名: <input id="booking_name" type="text"></label>
-        <label>聯絡信箱: <input id="booking_email" type="text"></label>
-        <label>手機號碼: <input id="booking_phone" type="text"></label>
+        <label>聯絡姓名: <input id="booking_name" type="text" required></label>
+        <label>聯絡信箱: <input id="booking_email" type="email" pattern="^@]+@[^@]+\.[^@]+" required></label>
+        <label>手機號碼: <input id="booking_phone" type="text" required></label>
         <p>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
     </div>
     <hr>
@@ -38,7 +38,7 @@
         <h3>信用卡付款資訊</h3>
         <label>卡片號碼: <div class="tpfield" id="card-number"></div></label>
         <label>過期時間: <div class="tpfield" id="card-expiration-date"></div></label>
-        <label>驗證密碼: <div class="tpfield" id="card-ccv"></div></label>
+        <label>驗證密碼: <div class="tpfield" id="card-ccv"></div></label>    
     </div>
     <hr>
     <div class="wrap payment">

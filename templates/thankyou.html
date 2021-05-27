@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "base.html"%}
+{% block css%}
+    <link rel="stylesheet" href="/static/css/thankyou.css" type="text/css">
+{% endblock %}
+{% block js%}
+    <script defer src="/static/js/thankyou.js"></script>
+{% endblock%}
+{% block main %}
+    <div class="container">
+        <img src="/static/img/checked.png" alt="">
+        <h2>交易已付款成功</h2>
+        <div>本次交易訂單: <span id="po"></span></div>
+        <button id="home">回到首頁</button>
+    </div>
+{% endblock %}
