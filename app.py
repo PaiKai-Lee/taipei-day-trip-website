@@ -4,21 +4,13 @@ from api.users import users
 from api.att import att
 from api.res import res
 from api.pay import pay
+import os 
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['JSON_SORT_KEYS'] = False
 app.secret_key = os.environ.get("session_key")
-
-# mydb = mysql.connector.connect(
-#     host="localhost",
-#     user=os.environ.get('DB_USER'),
-#     password=os.environ.get("DB_PASSWORD"),
-#     database="taipeiweb"
-# )
-# mycursor = mydb.cursor()
-
 
 # Pages
 @app.route("/")

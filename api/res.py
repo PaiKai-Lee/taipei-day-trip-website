@@ -1,16 +1,16 @@
-import re
-import mysql.connector,os
+import os
 from flask import Blueprint, json,request,session,jsonify
+from mysql.connector import pooling
 
 res=Blueprint("res",__name__)
 
-mydb = mysql.connector.connect(
+DBpool=pooling.MySQLConnectionPool(
     host="localhost",
     user=os.environ.get('DB_USER'),
     password=os.environ.get("DB_PASSWORD"),
     database="taipeiweb"
 )
-mycursor = mydb.cursor()
+
 
 @res.route("/api/booking",methods=["GET","POST","DELETE"])
 def book():
@@ -26,8 +26,12 @@ def book():
         booking_date=request.get_json()["date"]
         time_period=request.get_json()["time"]
         price=request.get_json()["price"]
+        connect_pool=DBpool.get_connection()
+        mycursor=connect_pool.cursor()
         mycursor.execute("SELECT name,address,images FROM attraction where id = %s", (id,))
         myresult = mycursor.fetchone()
+        connect_pool.commit()
+        connect_pool.close()
         if "user" not in session:
             return jsonify({"error":True,"message":"未登入系統"}),403
         if myresult == None:
