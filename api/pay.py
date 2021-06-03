@@ -1,18 +1,17 @@
-
 from flask import Blueprint,jsonify,request,session
 import requests as rq,json,random
 from datetime import datetime, timezone, timedelta
-import mysql.connector
 import os,re
 from dotenv import load_dotenv
-from mysql.connector import pooling
+from api.module import db
 
-DBpool=pooling.MySQLConnectionPool(
-    host="localhost",
-    user=os.environ.get('DB_USER'),
-    password=os.environ.get("DB_PASSWORD"),
-    database="taipeiweb"
-)
+# DBpool=pooling.MySQLConnectionPool(
+#     host="localhost",
+#     user=os.environ.get('DB_USER'),
+#     password=os.environ.get("DB_PASSWORD"),
+#     database="taipeiweb"
+# )
+DBpool=db.pool
 
 # 載入partner_key
 load_dotenv()

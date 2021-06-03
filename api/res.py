@@ -1,16 +1,16 @@
-import os
+
 from flask import Blueprint, json,request,session,jsonify
-from mysql.connector import pooling
+from api.module import db
 
 res=Blueprint("res",__name__)
 
-DBpool=pooling.MySQLConnectionPool(
-    host="localhost",
-    user=os.environ.get('DB_USER'),
-    password=os.environ.get("DB_PASSWORD"),
-    database="taipeiweb"
-)
-
+# DBpool=pooling.MySQLConnectionPool(
+#     host="localhost",
+#     user=os.environ.get('DB_USER'),
+#     password=os.environ.get("DB_PASSWORD"),
+#     database="taipeiweb"
+# )
+DBpool=db.pool
 
 @res.route("/api/booking",methods=["GET","POST","DELETE"])
 def book():

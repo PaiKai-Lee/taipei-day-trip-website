@@ -1,15 +1,16 @@
 from flask import Blueprint,jsonify,request
-import mysql.connector,json,os
-from mysql.connector import connect, pooling
+import json
+from api.module import db
 
 att=Blueprint("att",__name__)
 
-DBpool=pooling.MySQLConnectionPool(
-    host="localhost",
-    user=os.environ.get('DB_USER'),
-    password=os.environ.get("DB_PASSWORD"),
-    database="taipeiweb"
-)
+# DBpool=pooling.MySQLConnectionPool(
+#     host="localhost",
+#     user=os.environ.get('DB_USER'),
+#     password=os.environ.get("DB_PASSWORD"),
+#     database="taipeiweb"
+# )
+DBpool=db.pool
 # 旅遊景點API
 @att.route("/api/attractions")
 def apiAttractions():
