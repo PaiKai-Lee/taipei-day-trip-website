@@ -1,6 +1,6 @@
 from flask import Blueprint, request, session, jsonify
 import re
-from api.module import db
+import module.db as db
 
 users = Blueprint("users", __name__)
 

@@ -27,7 +27,6 @@ let add_content = (item_len, myJson) => {
         let attraction_url = Domain + "/attraction/" + view_id;
         image_link.href = attraction_url;
 
-
         image_link.appendChild(container_image)
         content_wrap.appendChild(div_container);
         div_container.appendChild(image_link);

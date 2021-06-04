@@ -1,5 +1,8 @@
 const Domain = "http://127.0.0.1:3000"
 // const Domain = "http://13.115.37.65"
+window.addEventListener("load",()=>{
+    document.getElementById("loaderFrame").style.display="none"
+});
 // 照片更換切換函式
 let change_img = () => {
     let next_photo = document.getElementById("next");
@@ -166,7 +169,10 @@ document.getElementById("booking_btn").addEventListener("click", () => {
                     .then(function (myJson) {
                         if (myJson["ok"] == true) {
                             window.location.href = "/booking"
-                        }
+                        };
+                        if (myJson["error"] == true) {
+                            alert(myJson["message"])
+                        };
                     })
             }
 

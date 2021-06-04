@@ -1,6 +1,6 @@
 from flask import Blueprint,jsonify,request
 import json
-from api.module import db
+import module.db as db
 
 att=Blueprint("att",__name__)
 

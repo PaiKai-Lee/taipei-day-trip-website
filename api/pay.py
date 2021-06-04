@@ -3,7 +3,7 @@ import requests as rq,json,random
 from datetime import datetime, timezone, timedelta
 import os,re
 from dotenv import load_dotenv
-from api.module import db
+import module.db as db
 
 # DBpool=pooling.MySQLConnectionPool(
 #     host="localhost",
@@ -53,7 +53,7 @@ def order():
     info={
     "prime": data["prime"],
     "partner_key": partner_key,
-    "merchant_id": "Kai9888_CTBC",
+    "merchant_id": "Kai9888_NCCC",
     "details":data["order"]["trip"]["attraction"]["name"],
     "amount": data["order"]["price"],
     "order_number":poNumber,
