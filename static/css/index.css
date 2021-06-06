@@ -85,7 +85,6 @@ h2{
     line-height: 20px;
     font-weight: 600; 
 }
-
 @media screen and (max-width:1200px){
     .container{
         width: 45%;

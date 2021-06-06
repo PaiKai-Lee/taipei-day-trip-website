@@ -34,8 +34,9 @@ let add_content = (item_len, myJson) => {
         div_container.appendChild(div_cat);
         div_cat.appendChild(p_mrt);
         div_cat.appendChild(p_cat);
-    };
-}
+       
+    } 
+};
 let nextPage = 0;
 let keyword = "";
 
@@ -105,11 +106,12 @@ let debounce = (fn, delay) => {
     };
 };
 // infinite scroll & laoding nextpage
-window.addEventListener("scroll", debounce(e => {
+window.addEventListener("scroll",debounce(e => {
     let scrolled = window.scrollY;
     let screen_h = document.documentElement.clientHeight;
     let total_h = document.documentElement.scrollHeight;
     let load_trigger = (total_h - screen_h) * 0.9
+    
 
     if (scrolled > load_trigger) {
         if (nextPage != null) {
@@ -123,7 +125,7 @@ window.addEventListener("scroll", debounce(e => {
                 .then(function (myJson) {
                     nextPage = myJson["nextPage"];
                     let item_len = myJson["data"].length;
-                    add_content(item_len, myJson);
+                    add_content(item_len, myJson)
                 });
         };
     }

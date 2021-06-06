@@ -1,9 +1,9 @@
 // const Domain = "http://127.0.0.1:3000"
 const Domain = "https://for-traveler.com"
+// 照片更換切換函式
 window.addEventListener("load",()=>{
     document.getElementById("loaderFrame").style.display="none"
 });
-// 照片更換切換函式
 let change_img = () => {
     let next_photo = document.getElementById("next");
     let prev_photo = document.getElementById("prev");

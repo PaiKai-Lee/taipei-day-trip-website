@@ -33,6 +33,7 @@ fetch(Domain + "/api/user")
                     document.getElementsByTagName("body")[0].style.overflowY="hidden";
                 }
                 else {
+                    document.getElementById("booking_info").style.display = "block"
                     let id = myJson["data"]["attractionId"]["id"];
                     let view_name = myJson["data"]["attractionId"]["name"];
                     let date = myJson["data"]["date"];
@@ -177,6 +178,10 @@ document.getElementById("paySubmit").addEventListener("click", (event) => {
             return res.json()
         })
         .then((myJson)=>{
+            console.log(myJson)
+            if(myJson["error"]==true){
+                alert(myJson["message"])
+            }
             let po=myJson["data"]["number"]
             let params = { number: po}
             let url = new URL(Domain + "/thankyou")
