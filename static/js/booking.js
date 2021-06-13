@@ -162,6 +162,15 @@ document.getElementById("paySubmit").addEventListener("click", (event) => {
             return
         }
         contact["phone"]=document.getElementById("booking_phone").value
+        // 
+        console.log( JSON.stringify({
+            "prime": result.card.prime,
+            "order":{
+                "price":orders["price"],
+                "trip":orders["trip"],
+                "contact":contact
+            }}))
+            // 
         fetch(Domain + "/api/orders", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },

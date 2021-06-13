@@ -5,12 +5,14 @@ from api.att import att
 from api.res import res
 from api.pay import pay
 import os 
+from dotenv import load_dotenv
 
+load_dotenv()
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['JSON_SORT_KEYS'] = False
-app.secret_key = os.environ.get("session_key")
+app.secret_key = os.getenv("session_key")
 
 # Pages
 @app.route("/")
@@ -47,4 +49,4 @@ app.register_blueprint(pay)
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3000, debug=True)
+    app.run(host="0.0.0.0", port=3000)
