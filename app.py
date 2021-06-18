@@ -1,5 +1,4 @@
 from flask import *
-import mysql.connector,json,os
 from api.users import users
 from api.att import att
 from api.res import res
@@ -45,7 +44,6 @@ app.register_blueprint(res)
 
 # 註冊訂單付款API
 app.register_blueprint(pay)
-
 
 
 if __name__ == "__main__":

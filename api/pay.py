@@ -1,5 +1,4 @@
 from flask import Blueprint,jsonify,request,session
-from mysql.connector import connect
 import requests as rq,json,random
 from datetime import datetime, timezone, timedelta
 import os,re

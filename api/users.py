@@ -1,19 +1,13 @@
 from flask import Blueprint, request, session, jsonify
 import re
 import module.db as db
+import module.verify as vr
 
 users = Blueprint("users", __name__)
-
-# DBpool=pooling.MySQLConnectionPool(
-#     host="localhost",
-#     user=os.environ.get('DB_USER'),
-#     password=os.environ.get("DB_PASSWORD"),
-#     database="taipeiweb"
-# )
 DBpool=db.pool
+
+
 # 使用者API
-
-
 @users.route("/api/user", methods=["GET", "POST", "PATCH", "DELETE"])
 def user():
     # 取得使用者
@@ -50,9 +44,11 @@ def user():
         DBuser = mycursor.fetchone()
         if DBuser != None:
             return jsonify({"error": True, "message": "註冊失敗，重複的 Email"}), 400
-
-        sql = ("INSERT INTO users(name,email,password) VALUES (%s,%s,%s)")
-        val = (user, user_email, user_password)
+        q=vr.setPassword(user_password)
+        password=q["password"]
+        salt=q["salt"]
+        sql = ("INSERT INTO users(name,email,password,salt) VALUES (%s,%s,%s,%s)")
+        val = (user, user_email, password,salt)
         mycursor.execute(sql, val)
         connect_pool.commit()
         connect_pool.close()
@@ -64,12 +60,13 @@ def user():
         connect_pool=DBpool.get_connection()
         mycursor=connect_pool.cursor()
         mycursor.execute(
-            "SELECT email,password FROM users where email= %s", (user_email,))
+            "SELECT email,password,salt FROM users where email= %s", (user_email,))
         DBuser = mycursor.fetchone()
         connect_pool.close()
-        if DBuser == None or user_password != DBuser[1] or user_email != DBuser[0]:
+        q=vr.verifyPassword(user_password,DBuser[1],DBuser[2])
+        if DBuser == None or q == False or user_email != DBuser[0]:
             return jsonify({"error": True, "message": "登入失敗，帳號或密碼錯誤"}), 400
-        elif user_password == DBuser[1]:
+        elif q == True:
             session["user"] = user_email
             session.permanent = True
             return jsonify({"ok": True})
