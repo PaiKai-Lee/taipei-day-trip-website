@@ -5,7 +5,6 @@ def setPassword(user):
     salt=datetime.now().strftime("%f")+datetime.now().strftime("%a")
     res=f"{user}{salt}"
     m.update(res.encode("utf-8"))
-    print(m.hexdigest())
     res={"password":m.hexdigest(),"salt":salt}
     return res
 
