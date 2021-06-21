@@ -1,5 +1,4 @@
-// const Domain = "http://127.0.0.1:3000"
-// const Domain = "https://for-traveler.com"
+
 // 載入資料函式
 let add_content = (item_len, myJson) => {
     for (i = 0; i < item_len; i++) {
@@ -49,7 +48,7 @@ fetch('/api/attractions')
         let item_len = myJson["data"].length;
         add_content(item_len, myJson);
         //GET user API
-        fetch(Domain + '/api/user')
+        fetch('/api/user')
             .then(function (response) {
                 return response.json();
             })
@@ -74,9 +73,9 @@ search_btn.addEventListener("click", function (e) {
     content_wrap.innerHTML = "";
     keyword = view_name.value;
     let params = { page: nextPage, keyword: keyword }
-    let url = new URL(Domain + "/api/attractions")
-    url.search = new URLSearchParams(params).toString();
-    fetch(url)
+    let url = "/api/attractions?"
+    let search = new URLSearchParams(params).toString();
+    fetch(url+search)
         .then(function (response) {
             console.log(response.status);
             if (response.status != 200) {
