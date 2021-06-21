@@ -1,5 +1,3 @@
-// const Domain = "http://127.0.0.1:3000"
-const Domain = "https://for-traveler.com"
 // 照片更換切換函式
 window.addEventListener("load",()=>{
     document.getElementById("loaderFrame").style.display="none"
@@ -60,7 +58,7 @@ let change_img = () => {
 
 let url_path = window.location.pathname;
 let id = url_path.split("/")[2];
-let url = Domain + "/api/attraction/" + id
+let url = "/api/attraction/" + id
 
 fetch(url)
     .then(function (response) {
@@ -120,7 +118,7 @@ fetch(url)
     })
     .then(function () {
         change_img();
-        return fetch(Domain + '/api/user')
+        return fetch('/api/user')
             .then(function (response) {
                 return response.json();
             })
@@ -137,7 +135,7 @@ fetch(url)
     });
 //開始預訂行程
 document.getElementById("booking_btn").addEventListener("click", () => {
-    fetch(Domain + '/api/user')
+    fetch('/api/user')
         .then(function (response) {
             return response.json();
         })
@@ -153,7 +151,7 @@ document.getElementById("booking_btn").addEventListener("click", () => {
             else {
                 let time = document.querySelector('[name=time]:checked');
                 let date = document.getElementById("date");
-                fetch(Domain + '/api/booking', {
+                fetch('/api/booking', {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

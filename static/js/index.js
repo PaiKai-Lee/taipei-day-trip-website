@@ -1,5 +1,5 @@
 // const Domain = "http://127.0.0.1:3000"
-const Domain = "https://for-traveler.com"
+// const Domain = "https://for-traveler.com"
 // 載入資料函式
 let add_content = (item_len, myJson) => {
     for (i = 0; i < item_len; i++) {
@@ -24,7 +24,7 @@ let add_content = (item_len, myJson) => {
         image_name.className = "cat1";
         div_cat.className = "cat";
         let image_link = document.createElement("a")
-        let attraction_url = Domain + "/attraction/" + view_id;
+        let attraction_url = "/attraction/" + view_id;
         image_link.href = attraction_url;
 
         image_link.appendChild(container_image)
@@ -40,7 +40,7 @@ let add_content = (item_len, myJson) => {
 let nextPage = 0;
 let keyword = "";
 
-fetch(Domain + '/api/attractions')
+fetch('/api/attractions')
     .then(function (response) {
         return response.json();
     })
@@ -116,9 +116,11 @@ window.addEventListener("scroll",debounce(e => {
     if (scrolled > load_trigger) {
         if (nextPage != null) {
             let params = { page: nextPage, keyword: keyword }
-            let url = new URL(Domain + "/api/attractions")
-            url.search = new URLSearchParams(params).toString()
-            fetch(url)
+            let path = "/api/attractions?"
+            let search = new URLSearchParams(params).toString()
+            console.log(path)
+            console.log(search)
+            fetch(path+search)
                 .then(function (response) {
                     return response.json();
                 })

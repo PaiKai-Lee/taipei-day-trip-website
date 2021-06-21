@@ -35,7 +35,7 @@ go_to_login.addEventListener("click", () => {
 document.getElementById("login-btn").addEventListener("click", () => {
     let login_email = document.getElementById("login-email");
     let login_password = document.getElementById("login-password");
-    fetch(Domain + "/api/user", {
+    fetch("/api/user", {
         method: "PATCH",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -73,7 +73,7 @@ document.getElementById("signup-btn").addEventListener("click", () => {
     let signup_user = document.getElementById("signup-user");
     let signup_email = document.getElementById("signup-email");
     let signup_password = document.getElementById("signup-password");
-    fetch(Domain + "/api/user", {
+    fetch("/api/user", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -106,7 +106,7 @@ document.getElementById("signup-btn").addEventListener("click", () => {
 })
 // 登出會員
 document.getElementById("logout").addEventListener("click", () => {
-    fetch(Domain + "/api/user", {
+    fetch("/api/user", {
         method: "DELETE",
         headers: { 'Content-Type': 'application/json' }
     })
@@ -121,7 +121,7 @@ document.getElementById("logout").addEventListener("click", () => {
 })
 //導覽列預定行程
 document.getElementById("booking_page").addEventListener("click", () => {
-    fetch(Domain + "/api/user")
+    fetch("/api/user")
         .then(function (response) {
             return response.json()
         })

@@ -1,6 +1,6 @@
 // const Domain = "http://127.0.0.1:3000"
 const Domain = "https://for-traveler.com"
-fetch(Domain + "/api/user")
+fetch("/api/user")
     .then(function (response) {
         return response.json()
     })
