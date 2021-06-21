@@ -1,20 +1,15 @@
-
 from flask import Blueprint,jsonify,request,session
 import requests as rq,json,random
 from datetime import datetime, timezone, timedelta
-import mysql.connector
 import os,re
+from dotenv import load_dotenv
+import module.db as db
 
-sers = Blueprint("users", __name__)
+DBpool=db.pool
 
-mydb = mysql.connector.connect(
-    host="localhost",
-    user=os.environ.get('DB_USER'),
-    password=os.environ.get("DB_PASSWORD"),
-    database="taipeiweb"
-)
-mycursor = mydb.cursor()
-
+# 載入partner_key
+load_dotenv()
+partner_key=os.getenv("partner_key")
 
 pay=Blueprint("pay",__name__)
 
@@ -40,18 +35,19 @@ def order():
     # 紀錄此PO付款狀態
     session[poNumber]="未付款"
 
-    
+    connect_pool=DBpool.get_connection()
+    mycursor = connect_pool.cursor()
     sql = ("INSERT INTO booking(po,bookingInfo) VALUES (%s,%s)")
     val = (poNumber,json.dumps(data))
     mycursor.execute(sql, val)
-    mydb.commit()
-
+    connect_pool.commit()
+    connect_pool.close()
     # Tappay API
     url=" https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
     info={
     "prime": data["prime"],
-    "partner_key": "partner_i1u6QGYklQKVkuqxj6Lb9v647YQosB3OnjuwRPwwSLnYNBXhzBWRHLoS",
-    "merchant_id": "Kai9888_CTBC",
+    "partner_key": partner_key,
+    "merchant_id": "Kai9888_NCCC",
     "details":data["order"]["trip"]["attraction"]["name"],
     "amount": data["order"]["price"],
     "order_number":poNumber,
@@ -67,13 +63,14 @@ def order():
     }
     r=rq.post(url,headers={
         "Content-Type":"application/json",
-        "x-api-key":"partner_i1u6QGYklQKVkuqxj6Lb9v647YQosB3OnjuwRPwwSLnYNBXhzBWRHLoS"},
+        "x-api-key":partner_key},
         data=json.dumps(info)
         )
     res=r.json()
     if res["status"]==0:
         # 交易成功之PO狀態
         session[res["order_number"]]="已付款"
+        session.pop("booking_data",None)
         return jsonify({
             "data":{
                 "number":res["order_number"],

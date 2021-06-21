@@ -1,6 +1,5 @@
-const Domain = "http://13.115.37.65:3000"
 let orders
-fetch(Domain + "/api/user")
+fetch("/api/user")
     .then(function (response) {
         return response.json()
     })
@@ -19,7 +18,7 @@ fetch(Domain + "/api/user")
             document.getElementById("booking_name").value = user_name;
             document.getElementById("booking_email").value = user_email;
         }
-        fetch(Domain + "/api/booking")
+        fetch("/api/booking")
             .then(function (response) {
                 return response.json()
             })
@@ -32,6 +31,7 @@ fetch(Domain + "/api/user")
                     document.getElementsByTagName("body")[0].style.overflowY="hidden";
                 }
                 else {
+                    document.getElementById("booking_info").style.display = "block"
                     let id = myJson["data"]["attractionId"]["id"];
                     let view_name = myJson["data"]["attractionId"]["name"];
                     let date = myJson["data"]["date"];
@@ -66,7 +66,7 @@ fetch(Domain + "/api/user")
     })
 //刪除預定資料
 document.getElementById("delete").addEventListener("click", () => {
-    fetch(Domain + "/api/booking", {
+    fetch("/api/booking", {
         method: "DELETE",
         headers: { 'Content-Type': 'application/json' }
     })
@@ -160,7 +160,16 @@ document.getElementById("paySubmit").addEventListener("click", (event) => {
             return
         }
         contact["phone"]=document.getElementById("booking_phone").value
-        fetch(Domain + "/api/orders", {
+        // 
+        console.log( JSON.stringify({
+            "prime": result.card.prime,
+            "order":{
+                "price":orders["price"],
+                "trip":orders["trip"],
+                "contact":contact
+            }}))
+            // 
+        fetch("/api/orders", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -176,12 +185,16 @@ document.getElementById("paySubmit").addEventListener("click", (event) => {
             return res.json()
         })
         .then((myJson)=>{
+            console.log(myJson)
+            if(myJson["error"]==true){
+                alert(myJson["message"])
+            }
             let po=myJson["data"]["number"]
             let params = { number: po}
-            let url = new URL(Domain + "/thankyou")
-            url.search = new URLSearchParams(params).toString()
+            let url = "/thankyou?"
+            let search = new URLSearchParams(params).toString()
             if (myJson["data"]["payment"]["status"]===0){
-                window.location.href = url;
+                window.location.href = url+search;
             }else{
                 alert("訂單編號"+po+"付款失敗")
             }

@@ -1,3 +1,7 @@
+html{
+    scroll-behavior: smooth;
+}
+
 .banner{
     height: 320px;
     background: linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
@@ -44,7 +48,6 @@ h2{
     font-size: 16px;
     outline: none;
 }
-
 /* 主要內容圖片 */
 .wrap{
     width: 1200px;            
@@ -86,7 +89,21 @@ h2{
     line-height: 20px;
     font-weight: 600; 
 }
-
+#goTop{
+    display: block;
+    position: fixed;
+    right:3%;
+    bottom: 10%;
+    opacity: 0.4;
+    background-color: #6daab9;
+    transform: scale(0.8);
+    transition: 0.2s;
+    border-radius: 50%;
+}
+#goTop:hover{
+    opacity: 1;
+    transform: scale(1);
+}
 @media screen and (max-width:1200px){
     .container{
         width: 45%;
