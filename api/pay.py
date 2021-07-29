@@ -42,7 +42,7 @@ def order():
     mycursor.execute(sql, val)
     connect_pool.commit()
     connect_pool.close()
-    # Tappay API
+    # Tappay API url
     url=" https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
     info={
     "prime": data["prime"],
