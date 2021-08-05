@@ -40,13 +40,16 @@ h2{
     border-radius: 0 5px 5px 0;
     cursor: pointer;
 }
+#search_btn:hover{
+    opacity: 0.8;
+}
 #view_name{
     width: 400px;
     height: 46px;
     border-radius: 5px 0 0 5px;
     padding-left: 10px;
     font-size: 16px;
-    outline: none;
+    outline-color: rgb(100, 189, 184);
 }
 /* 主要內容圖片 */
 .wrap{
@@ -64,6 +67,7 @@ h2{
     border:1px lightgray solid;
     border-radius: 5px;
     color:#757575 ;
+    box-shadow: 3px 3px 5px lightgray ;
 }
 .item{
     width: 100%;
@@ -95,7 +99,8 @@ h2{
     right:3%;
     bottom: 10%;
     opacity: 0.4;
-    background-color: #6daab9;
+    box-shadow: 1px 2px 5px #66AABB;
+    /* background-color: #6daab9; */
     transform: scale(0.8);
     transition: 0.2s;
     border-radius: 50%;
