@@ -93,6 +93,9 @@ document.getElementById("signup-btn").addEventListener("click", () => {
             status.style.color = "green";
             status.textContent = "註冊成功";
             console.log("成功")
+            signup_user.value = ""
+            signup_email.value = ""
+            signup_password.value =""
         })
         .catch(function (error) {
             console.log(error)
