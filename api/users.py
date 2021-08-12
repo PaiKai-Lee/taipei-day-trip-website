@@ -1,11 +1,9 @@
 from flask import Blueprint, request, session, jsonify
 import re
-import module.db as db
+from module.db import User
 import module.verify as vr
 
 users = Blueprint("users", __name__)
-DBpool=db.pool
-
 
 # 使用者API
 @users.route("/api/user", methods=["GET", "POST", "PATCH", "DELETE"])
@@ -14,12 +12,7 @@ def user():
     if request.method == "GET":
         if "user" in session:
             print("使用者: "+session["user"])
-            connect_pool=DBpool.get_connection()
-            mycursor=connect_pool.cursor()
-            mycursor.execute(
-                "SELECT user_id,name,email FROM users where email = %s", (session["user"],))
-            DBuser = mycursor.fetchone()
-            connect_pool.close()
+            DBuser=User.getUser(session["user"])
             return jsonify({"data": {
                 "id": DBuser[0],
                 "name": DBuser[1],
@@ -37,34 +30,20 @@ def user():
             return jsonify({"error": True, "message": "註冊資料不可空白"}), 400
         if validation.match(user_email) == None:
             return jsonify({"error": True, "message": "Email格式不正確"}), 400
-        connect_pool=DBpool.get_connection()
-        mycursor=connect_pool.cursor()
-        mycursor.execute(
-            "SELECT email FROM users where email = %s", (user_email,))
-        DBuser = mycursor.fetchone()
-        if DBuser != None:
+        DBuser= User.setUser(user, user_email, user_password)
+        if DBuser == False:
             return jsonify({"error": True, "message": "註冊失敗，重複的 Email"}), 400
-        q=vr.setPassword(user_password)
-        password=q["password"]
-        salt=q["salt"]
-        sql = ("INSERT INTO users(name,email,password,salt) VALUES (%s,%s,%s,%s)")
-        val = (user, user_email, password,salt)
-        mycursor.execute(sql, val)
-        connect_pool.commit()
-        connect_pool.close()
-        return jsonify({"ok": True}), 200
+        else:
+            return jsonify({"ok": True}), 200
     # 登入會員
     if request.method == "PATCH":
         user_email = request.get_json()["email"]
         user_password = request.get_json()["password"]
-        connect_pool=DBpool.get_connection()
-        mycursor=connect_pool.cursor()
-        mycursor.execute(
-            "SELECT email,password,salt FROM users where email= %s", (user_email,))
-        DBuser = mycursor.fetchone()
-        connect_pool.close()
+        DBuser=User.login(user_email)
+        if DBuser == None:
+            return jsonify({"error": True, "message": "登入失敗，帳號或密碼錯誤"}), 400
         q=vr.verifyPassword(user_password,DBuser[1],DBuser[2])
-        if DBuser == None or q == False or user_email != DBuser[0]:
+        if q == False or user_email != DBuser[0]:
             return jsonify({"error": True, "message": "登入失敗，帳號或密碼錯誤"}), 400
         elif q == True:
             session["user"] = user_email

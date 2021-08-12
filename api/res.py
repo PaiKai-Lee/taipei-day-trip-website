@@ -1,11 +1,7 @@
-
 from flask import Blueprint, json,request,session,jsonify
-import module.db as db
 import module.changeTime as compare
-
+from module.db import Attraction
 res=Blueprint("res",__name__)
-
-DBpool=db.pool
 
 @res.route("/api/booking",methods=["GET","POST","DELETE"])
 def book():
@@ -22,12 +18,8 @@ def book():
         time_period=request.get_json()["time"]
         price=request.get_json()["price"]
         comTime=compare.timeCompare(booking_date)
-        connect_pool=DBpool.get_connection()
-        mycursor=connect_pool.cursor()
-        mycursor.execute("SELECT name,address,images FROM attraction where id = %s", (id,))
-        myresult = mycursor.fetchone()
-        connect_pool.commit()
-        connect_pool.close()
+        data = Attraction.getOneAtt(int(id))
+        myresult=data[0]
         if "user" not in session:
             return jsonify({"error":True,"message":"未登入系統"}),403
         if myresult == None:
@@ -42,9 +34,9 @@ def book():
         booking_data={
             "attractionId":{
                 "id":id,
-                "name":myresult[0],
-                "address":myresult[1],
-                "image":json.loads(myresult[2])[0],
+                "name":myresult[1],
+                "address":myresult[4],
+                "image":json.loads(myresult[-1])[0],
             },
             "date":booking_date,
             "time":time,
