@@ -13,11 +13,10 @@
 * **Communications Protocol:** HTTP, HTTPS
 
 ## 網站架構
+![This is a architecture.](https://github.com/PaiKai-Lee/PaiKai-Lee/blob/34cbe60aeef41e21c74131048b68f6eaaac88ae6/Group%206.png "architecture.")
 
 ## MySQL關聯圖表
-
-
-
+![This is a MySQL.](https://github.com/PaiKai-Lee/PaiKai-Lee/blob/34cbe60aeef41e21c74131048b68f6eaaac88ae6/taipei.png "MySQL")
  
 
 
