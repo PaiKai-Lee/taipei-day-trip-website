@@ -1,29 +1,17 @@
 from flask import Blueprint,jsonify,request
 import json
-import module.db as db
+from module.db import Attraction
 
 att=Blueprint("att",__name__)
 
-# DBpool=pooling.MySQLConnectionPool(
-#     host="localhost",
-#     user=os.environ.get('DB_USER'),
-#     password=os.environ.get("DB_PASSWORD"),
-#     database="taipeiweb"
-# )
-DBpool=db.pool
 # 旅遊景點API
 @att.route("/api/attractions")
 def apiAttractions():
-    connect_pool=DBpool.get_connection()
-    mycursor = connect_pool.cursor()
     page = request.args.get("page", 0)
     page = int(page)
     keyword = request.args.get("keyword", "")
     start = page*12
-    mycursor.execute("SELECT * FROM attraction where name LIKE %s LIMIT %s,%s",
-                     (('%'+keyword+'%'), start, 12))
-    myresult = mycursor.fetchall()
-    connect_pool.close()
+    myresult = Attraction.getAtts(keyword,start)
     if len(myresult) == 0:
         return jsonify({"error": True, "message": "自訂錯誤訊息"}), 500
     data = []
@@ -54,16 +42,9 @@ def apiAttractions():
 
 @att.route("/api/attraction/<int:attractionId>")
 def apiAttraction(attractionId):
-    connect_pool=DBpool.get_connection()
-    mycursor = connect_pool.cursor()
-    mycursor.execute("SELECT COUNT(*) FROM attraction")
-    num = mycursor.fetchone()[0]
-    if attractionId > num:
+    myresult=Attraction.getOneAtt(attractionId)
+    if myresult==False:
         return jsonify({"error": True, "message": "自訂錯誤訊息"}), 400
-
-    mycursor.execute("SELECT * FROM attraction where id = %s", (attractionId,))
-    myresult = mycursor.fetchall()
-    connect_pool.close()
     if len(myresult) == 0:
         return jsonify({"error": True, "message": "自訂錯誤訊息"}), 500
     for information in myresult:

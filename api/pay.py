@@ -3,9 +3,7 @@ import requests as rq,json,random
 from datetime import datetime, timezone, timedelta
 import os,re
 from dotenv import load_dotenv
-import module.db as db
-
-DBpool=db.pool
+from module.db import Order
 
 # 載入partner_key
 load_dotenv()
@@ -43,17 +41,9 @@ def order():
     poNumber=int(dt.strftime("%y"+"%U"+"%d"+"%H"+"%M"+"%S")+str(x))
     # 紀錄此PO付款狀態
     session[poNumber]="未付款"
-
     email=contact_info["email"]
-    connect_pool=DBpool.get_connection()
-    mycursor = connect_pool.cursor()
-    mycursor.execute("SELECT user_id from users where email=%s",(email,))
-    user_id=mycursor.fetchone()[0]
-    sql = ("INSERT INTO bookinginfo(po,price,prime,attraction_id,date,time,user_id,phone) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)")
-    val = (poNumber,price,prime,attraction_id,po_date,po_time,user_id,phone)
-    mycursor.execute(sql, val)
-    connect_pool.commit()
-    connect_pool.close()
+
+    Order.setPo(email,poNumber,price,prime,attraction_id,po_date,po_time,phone)
     # Tappay API url
     url=" https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime"
     info={
@@ -105,5 +95,4 @@ def order():
 
 @pay.route("/api/order/<orderNumber>")
 def getOrder():
-    
-    return jsonify()
+    pass

@@ -50,7 +50,6 @@ document.getElementById("login-btn").addEventListener("click", () => {
             return response.json()
         })
         .then(function (myJson) {
-            console.log(myJson)
             let status = document.getElementById("login-status")
             status.style.color = "green";
             status.textContent = "登入成功";
@@ -59,7 +58,7 @@ document.getElementById("login-btn").addEventListener("click", () => {
             document.getElementById("show_login").style.display = "none";
         })
         .catch(function (error) {
-            console.log(error)
+            console.error(error)
             return error.json()
                 .then(function (errJson) {
                     let status = document.getElementById("login-status")
